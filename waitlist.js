@@ -21,17 +21,14 @@ function scrollToWaitlist(e) {
     });
 }
 
-// Set up scroll handlers for all "Join Waitlist" links
+// Waitlist form submission handler and scroll setup
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle all links that point to #waitlist
+    // Set up scroll handlers for all "Join Waitlist" links
     const waitlistLinks = document.querySelectorAll('a[href="#waitlist"]');
     waitlistLinks.forEach(link => {
         link.addEventListener('click', scrollToWaitlist);
     });
-});
-
-// Waitlist form submission handler
-document.addEventListener('DOMContentLoaded', function() {
+    
     const form = document.getElementById('waitlist-form');
     const emailInput = document.getElementById('waitlist-email');
     const nameInput = document.getElementById('waitlist-name');
