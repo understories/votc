@@ -36,7 +36,15 @@ module.exports = async function handler(req, res) {
     }
 
     // Parse service account credentials
-    const serviceAccount = JSON.parse(credentials);
+    // Trim whitespace and handle multi-line JSON from environment variable
+    const credentialsTrimmed = credentials.trim();
+    let serviceAccount;
+    try {
+      serviceAccount = JSON.parse(credentialsTrimmed);
+    } catch (parseError) {
+      console.error('Failed to parse service account credentials:', parseError.message);
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
 
     // Import googleapis (will be installed as dependency)
     const { google } = require('googleapis');
