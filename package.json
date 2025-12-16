@@ -1,0 +1,16 @@
+{
+  "name": "valley-of-the-commons",
+  "version": "1.0.0",
+  "description": "Landing page for Valley of the Commons",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "googleapis": "^126.0.1"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.x"
+  }
+}
+

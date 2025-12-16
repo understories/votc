@@ -88,10 +88,27 @@ Together, we can turn vision into reality.
 votc/
 ├── index.html          # Main landing page
 ├── styles.css          # Stylesheet
+├── waitlist.js         # Waitlist form handler (client-side)
+├── package.json        # Node.js dependencies
+├── vercel.json         # Vercel configuration
+├── api/
+│   └── waitlist.js     # Serverless function for Google Sheets integration
 ├── README.md           # This file
 ├── commonshublogo.svg  # Commons Hub logo
 └── valley.webp         # Hero image
 ```
+
+## Waitlist Functionality
+
+The site includes a waitlist form that securely stores email addresses in a private Google Sheet. The integration uses:
+
+- **Frontend:** HTML form with JavaScript for submission handling
+- **Backend:** Vercel serverless function (`/api/waitlist.js`) that acts as a secure proxy
+- **Storage:** Google Sheets (private, accessible only to admins)
+
+**Setup Instructions:** See `refs/google-sheets-setup.md` for detailed configuration steps.
+
+**Security:** All Google Sheets credentials are stored in Vercel environment variables and never exposed to the client. The Google Sheet remains private even though the code is public.
 
 ## Running Locally
 

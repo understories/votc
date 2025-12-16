@@ -25,3 +25,9 @@ npm-debug.log*
 # Internal planning and research
 refs/
 
+# Google service account credentials (NEVER commit these!)
+*-service-account*.json
+service-account*.json
+google-credentials*.json
+credentials.json
+

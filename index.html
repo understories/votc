@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valley of the Commons | Commons Hub</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="waitlist.js" defer></script>
 </head>
 <body id="top">
     <!-- Sticky CTA Button -->
@@ -118,6 +119,32 @@
         <section id="waitlist" class="section cta-section">
             <div class="cta-content">
                 <h2>Join the Valley of the Commons</h2>
+                
+                <!-- Waitlist Form -->
+                <form id="waitlist-form" class="waitlist-form">
+                    <div class="form-group">
+                        <input 
+                            type="email" 
+                            id="waitlist-email" 
+                            name="email" 
+                            placeholder="Enter your email" 
+                            required
+                            aria-label="Email address"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <input 
+                            type="text" 
+                            id="waitlist-name" 
+                            name="name" 
+                            placeholder="Your name (optional)" 
+                            aria-label="Your name"
+                        >
+                    </div>
+                    <button type="submit" class="waitlist-submit">Join Waitlist</button>
+                    <div id="waitlist-message" class="waitlist-message" role="status" aria-live="polite"></div>
+                </form>
+
                 <p>🌱 <strong>Lend to us</strong> – help bridge the final stretch of funding.</p>
                 <p>🙋‍♂️ <strong>Pre-register</strong> for the 2026 popup village.</p>
                 <p>✍️ <strong>Write to</strong> <a href="mailto:f.fritsch@commons-hub.at">f.fritsch@commons-hub.at</a> <strong>to get involved</strong> in the popup organization.</p>
