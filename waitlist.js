@@ -5,18 +5,24 @@ function scrollToSection(sectionId, e) {
     
     e.preventDefault();
     
+    // Get header height for offset
+    const header = document.querySelector('.header');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const offset = headerHeight + 20; // Add extra padding for visibility
+    
     // Calculate position to center the section in viewport
     const sectionRect = section.getBoundingClientRect();
     const sectionTop = sectionRect.top + window.pageYOffset;
     const viewportHeight = window.innerHeight;
     const sectionHeight = sectionRect.height;
     
-    // Calculate scroll position to center the section
-    const scrollPosition = sectionTop - (viewportHeight / 2) + (sectionHeight / 2);
+    // Calculate scroll position to center the section, accounting for header
+    // Ensure the title is visible by adjusting the offset
+    const scrollPosition = sectionTop - offset - (viewportHeight / 2) + (sectionHeight / 2);
     
     // Smooth scroll to centered position
     window.scrollTo({
-        top: scrollPosition,
+        top: Math.max(0, scrollPosition), // Ensure we don't scroll to negative position
         behavior: 'smooth'
     });
 }
