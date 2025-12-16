@@ -35,4 +35,6 @@ credentials.json
 .env
 .env.local
 .env.*.local
+# But allow .env.example to be committed
+!.env.example
 
