@@ -1,4 +1,4 @@
-// Smooth scroll to section, centered on page
+// Smooth scroll to section, ensuring title is visible
 function scrollToSection(sectionId, e) {
     const section = document.getElementById(sectionId);
     if (!section) return;
@@ -8,21 +8,20 @@ function scrollToSection(sectionId, e) {
     // Get header height for offset
     const header = document.querySelector('.header');
     const headerHeight = header ? header.offsetHeight : 0;
-    const offset = headerHeight + 20; // Add extra padding for visibility
+    const padding = 40; // Extra padding to ensure title is fully visible
     
-    // Calculate position to center the section in viewport
+    // Calculate position to show section with title visible
     const sectionRect = section.getBoundingClientRect();
     const sectionTop = sectionRect.top + window.pageYOffset;
     const viewportHeight = window.innerHeight;
-    const sectionHeight = sectionRect.height;
     
-    // Calculate scroll position to center the section, accounting for header
-    // Ensure the title is visible by adjusting the offset
-    const scrollPosition = sectionTop - offset - (viewportHeight / 2) + (sectionHeight / 2);
+    // Scroll to position that shows the section title with proper spacing
+    // Position section so it starts below header with padding
+    const scrollPosition = sectionTop - headerHeight - padding;
     
-    // Smooth scroll to centered position
+    // Smooth scroll to position
     window.scrollTo({
-        top: Math.max(0, scrollPosition), // Ensure we don't scroll to negative position
+        top: Math.max(0, scrollPosition),
         behavior: 'smooth'
     });
 }
