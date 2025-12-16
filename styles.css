@@ -26,6 +26,12 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Ensure waitlist section has proper spacing for centering */
+#waitlist {
+    scroll-margin-top: 0;
+    scroll-margin-bottom: 0;
+}
+
 body {
     font-family: var(--font-sans);
     color: var(--color-text);

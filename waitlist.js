@@ -1,3 +1,35 @@
+// Smooth scroll to waitlist section, centered on page
+function scrollToWaitlist(e) {
+    const waitlistSection = document.getElementById('waitlist');
+    if (!waitlistSection) return;
+    
+    e.preventDefault();
+    
+    // Calculate position to center the section in viewport
+    const sectionRect = waitlistSection.getBoundingClientRect();
+    const sectionTop = sectionRect.top + window.pageYOffset;
+    const viewportHeight = window.innerHeight;
+    const sectionHeight = sectionRect.height;
+    
+    // Calculate scroll position to center the section
+    const scrollPosition = sectionTop - (viewportHeight / 2) + (sectionHeight / 2);
+    
+    // Smooth scroll to centered position
+    window.scrollTo({
+        top: scrollPosition,
+        behavior: 'smooth'
+    });
+}
+
+// Set up scroll handlers for all "Join Waitlist" links
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle all links that point to #waitlist
+    const waitlistLinks = document.querySelectorAll('a[href="#waitlist"]');
+    waitlistLinks.forEach(link => {
+        link.addEventListener('click', scrollToWaitlist);
+    });
+});
+
 // Waitlist form submission handler
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('waitlist-form');
