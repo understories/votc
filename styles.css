@@ -279,7 +279,7 @@ body {
 
 .schedule-weeks {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-md);
     margin-top: var(--spacing-lg);
 }
@@ -289,6 +289,9 @@ body {
     padding: var(--spacing-md);
     border: 1px solid #e5e5e5;
     transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
 }
 
 .schedule-week:hover {
@@ -311,6 +314,7 @@ body {
     color: var(--color-text);
     margin: 0;
     font-weight: 500;
+    flex: 1;
 }
 
 /* Waitlist Form */
@@ -458,6 +462,10 @@ body {
     .schedule-weeks {
         grid-template-columns: 1fr;
         gap: var(--spacing-sm);
+    }
+
+    .schedule-week {
+        min-height: auto;
     }
 
     .cta-sticky {
