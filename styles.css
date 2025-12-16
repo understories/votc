@@ -83,6 +83,28 @@ body {
     text-decoration: underline;
 }
 
+.nav-external {
+    color: #666;
+    opacity: 0.8;
+}
+
+.nav-external:hover {
+    color: #999;
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.external-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.nav-external:hover .external-arrow {
+    transform: translateX(2px);
+}
+
 /* Sticky CTA Button */
 .cta-sticky {
     position: fixed;
