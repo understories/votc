@@ -187,6 +187,35 @@ body {
     line-height: 1.6;
 }
 
+/* Event Dates Banner */
+.event-dates-banner {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: var(--spacing-lg) var(--spacing-md);
+    text-align: center;
+}
+
+.event-dates-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.event-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-bg);
+}
+
+.event-dates {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    opacity: 0.95;
+}
+
 /* Main Content */
 .main-content {
     max-width: var(--max-width);
@@ -331,6 +360,14 @@ body {
     letter-spacing: 0.05em;
 }
 
+.schedule-week .week-dates {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
 .schedule-week .week-theme {
     font-size: 1.1rem;
     line-height: 1.5;
@@ -460,6 +497,18 @@ body {
 
     .hero-content {
         padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .event-dates-banner {
+        padding: var(--spacing-md);
+    }
+
+    .event-title {
+        font-size: 1.25rem;
+    }
+
+    .event-dates {
+        font-size: 1rem;
     }
 
     .main-content {
