@@ -225,19 +225,20 @@ body {
 .cta-section {
     background: var(--color-accent);
     color: var(--color-bg);
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
     text-align: center;
     margin-top: var(--spacing-xl);
 }
 
 .cta-content h2 {
     color: var(--color-bg);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
 }
 
 .cta-content p {
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
     font-size: 1.1rem;
+    line-height: 1.5;
 }
 
 .cta-content a {
@@ -250,7 +251,7 @@ body {
 }
 
 .cta-final {
-    margin-top: var(--spacing-md);
+    margin-top: var(--spacing-sm);
     font-size: 1.25rem;
     font-weight: 600;
 }
@@ -258,8 +259,8 @@ body {
 /* Waitlist Form */
 .waitlist-form {
     max-width: 500px;
-    margin: var(--spacing-lg) auto;
-    padding: var(--spacing-md);
+    margin: var(--spacing-md) auto var(--spacing-sm);
+    padding: 0;
 }
 
 .form-group {
@@ -317,11 +318,11 @@ body {
 }
 
 .waitlist-message {
-    margin-top: var(--spacing-sm);
-    padding: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
     text-align: center;
     font-size: 0.95rem;
-    min-height: 1.5rem;
+    min-height: 1.2rem;
 }
 
 .waitlist-message.success {
