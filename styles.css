@@ -259,7 +259,7 @@ body {
 /* Waitlist Form */
 .waitlist-form {
     max-width: 500px;
-    margin: var(--spacing-md) auto var(--spacing-sm);
+    margin: var(--spacing-md) auto var(--spacing-md);
     padding: 0;
 }
 
