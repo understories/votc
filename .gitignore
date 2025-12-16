@@ -31,3 +31,8 @@ service-account*.json
 google-credentials*.json
 credentials.json
 
+# Environment variables for local testing
+.env
+.env.local
+.env.*.local
+

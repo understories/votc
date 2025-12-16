@@ -79,7 +79,36 @@ module.exports = async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Error adding to waitlist:', error);
+    // Log detailed error for debugging (visible in Vercel logs)
+    console.error('Error adding to waitlist:', {
+      message: error.message,
+      code: error.code,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      details: error.response?.data,
+      stack: error.stack
+    });
+    
+    // Provide more specific error messages for common issues
+    if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+      return res.status(500).json({ 
+        error: 'Network error connecting to Google Sheets. Please try again later.' 
+      });
+    }
+    
+    if (error.response?.status === 403) {
+      console.error('Permission denied - check service account has access to sheet');
+      return res.status(500).json({ 
+        error: 'Permission error. Please contact support.' 
+      });
+    }
+    
+    if (error.response?.status === 404) {
+      console.error('Sheet not found - check spreadsheet ID and sheet name');
+      return res.status(500).json({ 
+        error: 'Sheet configuration error. Please contact support.' 
+      });
+    }
     
     // Don't expose internal errors to client
     return res.status(500).json({ 
