@@ -1,12 +1,12 @@
-// Smooth scroll to waitlist section, centered on page
-function scrollToWaitlist(e) {
-    const waitlistSection = document.getElementById('waitlist');
-    if (!waitlistSection) return;
+// Smooth scroll to section, centered on page
+function scrollToSection(sectionId, e) {
+    const section = document.getElementById(sectionId);
+    if (!section) return;
     
     e.preventDefault();
     
     // Calculate position to center the section in viewport
-    const sectionRect = waitlistSection.getBoundingClientRect();
+    const sectionRect = section.getBoundingClientRect();
     const sectionTop = sectionRect.top + window.pageYOffset;
     const viewportHeight = window.innerHeight;
     const sectionHeight = sectionRect.height;
@@ -21,12 +21,22 @@ function scrollToWaitlist(e) {
     });
 }
 
+// Smooth scroll to waitlist section, centered on page
+function scrollToWaitlist(e) {
+    scrollToSection('waitlist', e);
+}
+
 // Waitlist form submission handler and scroll setup
 document.addEventListener('DOMContentLoaded', function() {
-    // Set up scroll handlers for all "Join Waitlist" links
+    // Set up scroll handlers for all anchor links
     const waitlistLinks = document.querySelectorAll('a[href="#waitlist"]');
     waitlistLinks.forEach(link => {
         link.addEventListener('click', scrollToWaitlist);
+    });
+    
+    const scheduleLinks = document.querySelectorAll('a[href="#schedule"]');
+    scheduleLinks.forEach(link => {
+        link.addEventListener('click', (e) => scrollToSection('schedule', e));
     });
     
     const form = document.getElementById('waitlist-form');
