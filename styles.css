@@ -49,23 +49,25 @@
 
 .loading-title {
     position: absolute;
-    bottom: 15%;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     z-index: 10001;
     text-align: center;
     opacity: 0;
+    width: 100%;
+    max-width: var(--max-width);
+    padding: 0 var(--spacing-md);
     animation: fadeUpTitle 4s ease-out 2s forwards;
 }
 
 .loading-title h1 {
-    font-family: 'Playfair Display', 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 300;
-    font-style: italic;
+    font-family: var(--font-sans);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
     color: #fff;
     text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5), 0 4px 40px rgba(0, 0, 0, 0.3);
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
     line-height: 1.2;
     margin: 0;
 }
@@ -93,11 +95,11 @@
 @keyframes fadeUpTitle {
     0% {
         opacity: 0;
-        transform: translateX(-50%) translateY(30px);
+        transform: translate(-50%, -40%);
     }
     100% {
         opacity: 1;
-        transform: translateX(-50%) translateY(0);
+        transform: translate(-50%, -50%);
     }
 }
 
