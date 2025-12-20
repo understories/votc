@@ -31,8 +31,29 @@ function scrollToWaitlist(e) {
     scrollToSection('waitlist', e);
 }
 
+// Loading screen handler
+function initLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (!loadingScreen) return;
+
+    // Wait for page to fully load
+    window.addEventListener('load', function() {
+        // Add a small delay for smooth transition
+        setTimeout(function() {
+            loadingScreen.classList.add('hidden');
+            // Remove from DOM after transition completes
+            setTimeout(function() {
+                loadingScreen.remove();
+            }, 800);
+        }, 500);
+    });
+}
+
 // Waitlist form submission handler and scroll setup
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize loading screen
+    initLoadingScreen();
+    
     // Set up scroll handlers for all anchor links
     const waitlistLinks = document.querySelectorAll('a[href="#waitlist"]');
     waitlistLinks.forEach(link => {
