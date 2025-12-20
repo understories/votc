@@ -38,14 +38,14 @@ function initLoadingScreen() {
 
     // Wait for page to fully load
     window.addEventListener('load', function() {
-        // Add a small delay for smooth transition
+        // Add delay to allow title animation to complete (6s zoom + 4s title = ~6s total)
         setTimeout(function() {
             loadingScreen.classList.add('hidden');
             // Remove from DOM after transition completes
             setTimeout(function() {
                 loadingScreen.remove();
-            }, 800);
-        }, 500);
+            }, 1200);
+        }, 6500); // Wait for animations to complete
     });
 }
 
