@@ -692,6 +692,10 @@ body {
         min-height: auto;
     }
 
+    .explore-embed iframe {
+        height: 300px;
+    }
+
     .cta-sticky {
         bottom: var(--spacing-sm);
         right: var(--spacing-sm);
