@@ -107,7 +107,7 @@
 @keyframes fadeUpHero {
     0% {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(60px);
     }
     100% {
         opacity: 1;
@@ -118,7 +118,7 @@
 @keyframes fadeUpHeroContent {
     0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(40px);
     }
     100% {
         opacity: 1;
@@ -293,8 +293,8 @@ body {
     backdrop-filter: blur(2px);
     width: 100%;
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeUpHeroContent 1.5s ease-out 0.5s forwards;
+    transform: translateY(40px);
+    animation: fadeUpHeroContent 2s ease-out 0.5s forwards;
 }
 
 .hero-content h1 {
@@ -306,8 +306,8 @@ body {
     line-height: 1.2;
     letter-spacing: 0.05em;
     opacity: 0;
-    transform: translateY(30px);
-    animation: fadeUpHero 1.5s ease-out 0.5s forwards;
+    transform: translateY(60px);
+    animation: fadeUpHero 2s ease-out 0.5s forwards;
 }
 
 .hero-subtitle {
