@@ -29,6 +29,24 @@ A commons game for commoners.`;
                 // Show output
                 output.textContent = responseText;
                 output.classList.add('show');
+            } else if (userInput === 'no') {
+                // Hide input line
+                document.getElementById('input-line').style.display = 'none';
+                
+                // Show friendly message
+                const noMessage = `The commons belong to everyone.
+This game is open, collaborative, and free.
+All are welcome to participate in their own way.
+
+Returning to the valley...`;
+                
+                output.textContent = noMessage;
+                output.classList.add('show');
+                
+                // Redirect to homepage after a delay
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 3000);
             } else {
                 // Clear input on any other response
                 input.value = '';
