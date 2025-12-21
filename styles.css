@@ -62,12 +62,13 @@
 }
 
 .loading-title h1 {
-    font-family: var(--font-sans);
+    font-family: 'Playfair Display', serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
+    font-weight: 300;
+    font-style: italic;
     color: #fff;
     text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5), 0 4px 40px rgba(0, 0, 0, 0.3);
-    letter-spacing: 0;
+    letter-spacing: 0.05em;
     line-height: 1.2;
     margin: 0;
 }
@@ -100,6 +101,17 @@
     100% {
         opacity: 1;
         transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeUpHero {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -272,10 +284,16 @@ body {
 }
 
 .hero-content h1 {
+    font-family: 'Playfair Display', serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
+    font-weight: 300;
+    font-style: italic;
     margin-bottom: var(--spacing-md);
     line-height: 1.2;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUpHero 1.5s ease-out 0.5s forwards;
 }
 
 .hero-subtitle {
