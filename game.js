@@ -29,6 +29,14 @@ A commons game for commoners.`;
                 // Show output
                 output.textContent = responseText;
                 output.classList.add('show');
+                
+                // After showing the message, wait and show second message, then redirect
+                setTimeout(function() {
+                    output.textContent = 'commoning soon on github';
+                    setTimeout(function() {
+                        window.location.href = 'index.html';
+                    }, 20000);
+                }, 2000); // Small delay to let first message be read
             } else if (userInput === 'no') {
                 // Hide input line
                 document.getElementById('input-line').style.display = 'none';
