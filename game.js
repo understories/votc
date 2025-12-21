@@ -44,7 +44,7 @@ A commons game for commoners.`;
             // Hide input line
             document.getElementById('input-line').style.display = 'none';
             
-            // Show friendly message
+            // Show friendly message and wait for user to press enter
             const noMessage = `The commons belong to everyone.
 This game is open, collaborative, and free.
 All are welcome to participate in their own way.
@@ -53,7 +53,7 @@ press enter to continue`;
             
             output.textContent = noMessage;
             output.classList.add('show');
-            waitingForContinue = true;
+            waitingForContinue = true; // Wait for user to press enter before redirecting
         } else {
             // Clear input on any other response
             input.value = '';
