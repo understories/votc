@@ -46,7 +46,7 @@ Returning to the valley...`;
                 // Redirect to homepage after a delay
                 setTimeout(function() {
                     window.location.href = 'index.html';
-                }, 3000);
+                }, 20000);
             } else {
                 // Clear input on any other response
                 input.value = '';
