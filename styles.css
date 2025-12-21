@@ -281,6 +281,9 @@ body {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(2px);
     width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUpHeroContent 1.5s ease-out 0.5s forwards;
 }
 
 .hero-content h1 {
