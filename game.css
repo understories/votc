@@ -1,23 +1,145 @@
-/* Game Page Styles */
-.game-page {
+/* Terminal Game Page Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     width: 100%;
     height: 100vh;
     background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-md);
 }
 
-.game-page h1 {
+.terminal {
+    width: 100%;
+    height: 100vh;
+    padding: var(--spacing-lg, 2rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.terminal-content {
+    width: 100%;
+    max-width: 800px;
+}
+
+.terminal-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.prompt {
+    color: #00ff00;
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.question {
     color: #fff;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 300;
-    font-style: italic;
-    text-align: center;
-    margin: 0;
-    letter-spacing: 0.05em;
-    line-height: 1.3;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
 }
 
+#input-line {
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+#terminal-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #00ff00;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    font-size: 1.1rem;
+    flex: 1;
+    padding: 0;
+    margin-left: 0.5rem;
+}
+
+#terminal-input::placeholder {
+    color: #555;
+}
+
+.cursor {
+    color: #00ff00;
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.terminal-output {
+    margin-top: 2rem;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.terminal-output.show {
+    opacity: 1;
+}
+
+.terminal-output p {
+    margin-bottom: 1rem;
+}
+
+.terminal-output ul {
+    list-style: none;
+    margin: 1.5rem 0;
+    padding-left: 0;
+}
+
+.terminal-output li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.terminal-output li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #00ff00;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .terminal {
+        padding: var(--spacing-md, 1.5rem);
+    }
+    
+    .terminal-line {
+        font-size: 1rem;
+    }
+    
+    .question {
+        font-size: 1.1rem;
+    }
+}
