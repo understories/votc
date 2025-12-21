@@ -58,7 +58,7 @@
     width: 100%;
     max-width: var(--max-width);
     padding: 0 var(--spacing-md);
-    animation: fadeUpTitle 4s ease-out 2s forwards;
+    animation: fadeUpTitle 8s ease-out 2s forwards;
 }
 
 .loading-title h1 {
