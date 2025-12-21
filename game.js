@@ -34,7 +34,7 @@ A commons game for commoners.`;
                 const secondMessage = '\n\ncommoning soon on github\n\npress enter to continue';
                 output.textContent = responseText + secondMessage;
                 waitingForContinue = true;
-            }, 2000); // Small delay to let first message be read
+            }, 10000); // Wait 10 seconds before showing "press enter to continue"
         } else if (userInput === 'no') {
             // Hide input line
             document.getElementById('input-line').style.display = 'none';
