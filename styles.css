@@ -226,6 +226,23 @@ body {
     transform: translateX(2px);
 }
 
+.nav a[href="#waitlist"] {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border: 2px solid var(--color-accent);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: all 0.2s ease;
+}
+
+.nav a[href="#waitlist"]:hover {
+    background: var(--color-bg);
+    color: var(--color-accent);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
 /* Sticky CTA Button */
 .cta-sticky {
     position: fixed;
