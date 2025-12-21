@@ -30,9 +30,10 @@ A commons game for commoners.`;
                 output.textContent = responseText;
                 output.classList.add('show');
                 
-                // After showing the message, wait and show second message, then redirect
+                // After showing the message, append second message at bottom, then redirect
                 setTimeout(function() {
-                    output.textContent = 'commoning soon on github';
+                    const secondMessage = '\n\ncommoning soon on github';
+                    output.textContent = responseText + secondMessage;
                     setTimeout(function() {
                         window.location.href = 'index.html';
                     }, 20000);
