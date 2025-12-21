@@ -18,12 +18,7 @@ Bind myth to reality.
 The Valley of the Commons.
 A commons game for commoners.`;
 
-    function handleEnter() {
-        if (waitingForContinue) {
-            window.location.href = 'index.html';
-            return;
-        }
-        
+    function processInput() {
         const userInput = input.value.trim().toLowerCase();
         
         if (userInput === 'yes') {
@@ -60,26 +55,39 @@ press enter to continue`;
         }
     }
 
+    function handleEnter(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        
+        if (waitingForContinue) {
+            // Redirect to homepage
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        // Process the user's input
+        processInput();
+    }
+
+    // Listen for Enter key on input
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            e.preventDefault();
-            handleEnter();
+            handleEnter(e);
         }
     });
     
-    // Also listen for Enter key on document when waiting for continue
+    // Also listen for Enter key on document (for when input is hidden)
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && waitingForContinue) {
-            e.preventDefault();
-            window.location.href = 'index.html';
+        if (e.key === 'Enter') {
+            handleEnter(e);
         }
     });
     
-    // Keep focus on input
+    // Keep focus on input when not waiting for continue
     input.addEventListener('blur', function() {
         if (!waitingForContinue) {
             input.focus();
         }
     });
 });
-
