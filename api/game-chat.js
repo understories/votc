@@ -4,7 +4,12 @@
 
 // CRITICAL: Set AI_GATEWAY_API_KEY before requiring 'ai' SDK
 // The SDK reads this at initialization time
-if (!process.env.AI_GATEWAY_API_KEY && process.env.GAME_INTELLIGENCE) {
+// Prefer GAME_INTELLIGENCE if it exists and is a valid key (starts with vck_)
+// Otherwise use AI_GATEWAY_API_KEY if it's a valid key
+const gatewayKey = process.env.GAME_INTELLIGENCE || process.env.AI_GATEWAY_API_KEY;
+if (gatewayKey && gatewayKey.startsWith('vck_')) {
+  process.env.AI_GATEWAY_API_KEY = gatewayKey;
+} else if (process.env.GAME_INTELLIGENCE && process.env.GAME_INTELLIGENCE.startsWith('vck_')) {
   process.env.AI_GATEWAY_API_KEY = process.env.GAME_INTELLIGENCE;
 }
 
