@@ -140,6 +140,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function finalizeStreamingMessage(element) {
         element.classList.remove('ai-message-streaming');
+        // Add dataset attributes for message selection
+        const line = element.closest('.terminal-line');
+        if (line) {
+            line.classList.add('message-line');
+            line.dataset.role = 'assistant';
+            line.dataset.content = element.textContent;
+            // Add click handler for selection
+            line.addEventListener('click', function() {
+                selectMessage(line, 'assistant', element.textContent);
+            });
+        }
     }
 
     function showLoadingIndicator(message) {
