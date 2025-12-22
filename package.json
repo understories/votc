@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Landing page for Valley of the Commons",
   "scripts": {
-    "dev": "vercel dev"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.0",
