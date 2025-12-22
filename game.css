@@ -203,18 +203,26 @@ body {
     padding-left: 0.75rem;
 }
 
-.share-button {
+.share-buttons-container {
     margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.share-button {
     padding: 0.5rem 1rem;
     background: transparent;
     border: 2px solid #00ff00;
     color: #00ff00;
     font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    flex: 1;
+    min-width: 150px;
 }
 
 .share-button:hover:not(:disabled) {
@@ -225,6 +233,21 @@ body {
 .share-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.share-button-default {
+    border-color: #00ff00;
+}
+
+.share-button-own {
+    border-color: #666;
+    color: #999;
+}
+
+.share-button-own:hover:not(:disabled) {
+    background: #666;
+    color: #000;
+    border-color: #666;
 }
 
 .success-message {

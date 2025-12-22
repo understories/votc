@@ -233,36 +233,62 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showShareButton() {
-        // Remove existing button if any
+        // Remove existing buttons if any
         hideShareButton();
         
-        const button = document.createElement('button');
-        button.id = 'share-to-github-btn';
-        button.className = 'share-button';
-        button.textContent = 'Share to GitHub';
-        button.addEventListener('click', shareToGitHub);
-        
         const output = document.getElementById('output');
-        output.appendChild(button);
+        const buttonContainer = document.createElement('div');
+        buttonContainer.id = 'share-buttons-container';
+        buttonContainer.className = 'share-buttons-container';
+        
+        // Default account button (uses API)
+        const defaultButton = document.createElement('button');
+        defaultButton.id = 'share-default-btn';
+        defaultButton.className = 'share-button share-button-default';
+        defaultButton.textContent = 'Share (default account)';
+        defaultButton.addEventListener('click', () => shareToGitHub('default'));
+        
+        // Own account button (redirects to GitHub)
+        const ownButton = document.createElement('button');
+        ownButton.id = 'share-own-btn';
+        ownButton.className = 'share-button share-button-own';
+        ownButton.textContent = 'Share (my account)';
+        ownButton.addEventListener('click', () => shareToGitHub('own'));
+        
+        buttonContainer.appendChild(defaultButton);
+        buttonContainer.appendChild(ownButton);
+        output.appendChild(buttonContainer);
     }
 
     function hideShareButton() {
-        const button = document.getElementById('share-to-github-btn');
-        if (button) {
-            button.remove();
+        const container = document.getElementById('share-buttons-container');
+        if (container) {
+            container.remove();
         }
     }
 
-    async function shareToGitHub() {
+    async function shareToGitHub(method) {
         if (!selectedText || selectedMessages.length === 0) {
             displayError('No text selected');
             return;
         }
 
-        const button = document.getElementById('share-to-github-btn');
-        if (button) {
-            button.disabled = true;
-            button.textContent = 'Sharing...';
+        if (method === 'own') {
+            // Redirect to GitHub to create issue or file with user's account
+            shareWithOwnAccount();
+            return;
+        }
+
+        // Default: Use API with default account
+        const defaultButton = document.getElementById('share-default-btn');
+        const ownButton = document.getElementById('share-own-btn');
+        
+        if (defaultButton) {
+            defaultButton.disabled = true;
+            defaultButton.textContent = 'Sharing...';
+        }
+        if (ownButton) {
+            ownButton.disabled = true;
         }
 
         try {
@@ -291,11 +317,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             displayError(`Failed to share: ${error.message}`);
-            if (button) {
-                button.disabled = false;
-                button.textContent = 'Share to GitHub';
+            if (defaultButton) {
+                defaultButton.disabled = false;
+                defaultButton.textContent = 'Share (default account)';
+            }
+            if (ownButton) {
+                ownButton.disabled = false;
             }
         }
+    }
+
+    function shareWithOwnAccount() {
+        // Generate file content template
+        const timestamp = new Date().toISOString();
+        const date = new Date().toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZoneName: 'short'
+        });
+
+        const filename = `idea-${new Date().toISOString().slice(0, 19).replace(/:/g, '-').replace('T', '-')}.md`;
+        const fileContent = `# Idea: [Auto-generated from conversation]
+
+**Source:** Valley of the Commons Game Master Dialogue  
+**Date:** ${date}  
+**Excerpt:**
+
+${selectedText}
+
+---
+
+**Context:** This idea emerged from a Socratic dialogue about game design in the Valley of the Commons.
+
+**Next Steps:**
+- [ ] Refine this idea
+- [ ] Connect to other ideas
+- [ ] Propose as a tool/rule/quest
+
+---
+
+*Generated from game master conversation*`;
+
+        // Encode content for URL (base64 or use GitHub's issue creation)
+        // Option 1: Create GitHub issue with the content
+        const issueTitle = encodeURIComponent(`Idea: ${selectedText.slice(0, 50)}...`);
+        const issueBody = encodeURIComponent(`This idea was generated from a game master conversation.\n\n## Excerpt\n\n${selectedText}\n\n## File Content\n\nTo add this as a file in \`build_game/ideas/\`, use this content:\n\n\`\`\`markdown\n${fileContent}\n\`\`\`\n\n**Suggested filename:** \`${filename}\`\n\n---\n\n*You can copy the markdown above and create a new file in the repo, or convert this issue to a pull request.*`);
+        
+        const owner = 'understories';
+        const repo = 'votc';
+        const issueUrl = `https://github.com/${owner}/${repo}/issues/new?title=${issueTitle}&body=${issueBody}&labels=idea,game-design`;
+        
+        // Open in new tab
+        window.open(issueUrl, '_blank', 'noopener,noreferrer');
+        
+        // Show message
+        displayMessage('system', 'Opened GitHub in new tab. Create an issue, then you can convert it to a PR or add the file directly.');
+        
+        // Clear selection after a delay
+        setTimeout(() => {
+            clearSelection();
+        }, 2000);
     }
 
     function displaySuccess(url, filename) {
