@@ -3,6 +3,23 @@
 // Implements Socratic game master moderator
 
 const { streamText } = require('ai');
+const fs = require('fs');
+const path = require('path');
+
+// Load internal thoughts for context
+function loadInternalThoughts() {
+  try {
+    const thoughtsPath = path.join(process.cwd(), 'internal_thought.md');
+    if (fs.existsSync(thoughtsPath)) {
+      return fs.readFileSync(thoughtsPath, 'utf8');
+    }
+  } catch (error) {
+    console.warn('Could not load internal_thought.md:', error.message);
+  }
+  return '';
+}
+
+const INTERNAL_THOUGHTS = loadInternalThoughts();
 
 const SYSTEM_PROMPT = `You are a moderator at a game master meetup, facilitating Socratic dialogue about game design.
 
@@ -18,7 +35,9 @@ CRITICAL CONSTRAINTS:
 Context: "Valley of the Commons" is a decade-long game becoming a real village.
 Participants can: propose tools, add rules, name places, create quests, document paths, bind myth to reality.
 
-Your role is to probe with questions, not to lecture or provide answers.`;
+${INTERNAL_THOUGHTS ? `\nInternal Design Notes (for context, use subtly in questions, never lecture):\n${INTERNAL_THOUGHTS}\n` : ''}
+
+Your role is to probe with questions, not to lecture or provide answers. Use the internal thoughts to inform your questions, but help participants discover these concepts themselves through dialogue.`;
 
 module.exports = async function handler(req, res) {
   // Only allow POST requests
