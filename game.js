@@ -12,11 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedText = null;
     let selectedMessages = [];
 
-    // Update initial question to welcome message
-    const questionLine = document.querySelector('.question');
-    if (questionLine) {
-        questionLine.textContent = 'Welcome to the Valley. What would you like to explore?';
-    }
+    // Initial question is set in HTML
+    // After first response, Socratic game master moderator takes over
 
     async function sendMessage(userInput) {
         // Check turn limit
