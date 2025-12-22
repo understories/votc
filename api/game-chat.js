@@ -96,12 +96,13 @@ module.exports = async function handler(req, res) {
 
     // Ensure AI_GATEWAY_API_KEY is set for AI SDK (supports GAME_INTELLIGENCE alias)
     // AI SDK reads AI_GATEWAY_API_KEY automatically when using string model names
+    // Must be set before streamText is called
     if (!process.env.AI_GATEWAY_API_KEY) {
       process.env.AI_GATEWAY_API_KEY = apiKey;
     }
 
     // Model selection via string (Gateway routes it)
-    // Format: "provider/model-name"
+    // Format: "provider/model-name" for Vercel AI Gateway
     const modelName = process.env.GAME_MODEL || 'mistral/devstral-2';
     // Examples:
     // - "mistral/devstral-2" (current)
@@ -109,15 +110,17 @@ module.exports = async function handler(req, res) {
     // - "anthropic/claude-3-5-sonnet-20241022"
 
     // Stream response with strict limits
-    // AI SDK will automatically use AI_GATEWAY_API_KEY from environment
+    // AI SDK automatically uses AI_GATEWAY_API_KEY from environment when using string model names
+    console.log('Calling AI Gateway with model:', modelName);
     const result = streamText({
-      model: modelName, // String model name (Gateway routes it)
+      model: modelName, // String model name (Gateway routes it automatically)
       system: SYSTEM_PROMPT, // System prompt (NOT in messages array)
       messages: sanitizedMessages, // Only user/assistant messages
       maxTokens: 150, // Enforce brevity
       temperature: 0.7,
     });
 
+    console.log('StreamText result created, returning stream response');
     // Return text stream (simplest for terminal typewriter effect)
     return result.toTextStreamResponse();
 
@@ -125,11 +128,18 @@ module.exports = async function handler(req, res) {
     console.error('AI Gateway error:', {
       message: error.message,
       stack: error.stack,
+      model: modelName,
+      hasApiKey: !!apiKey,
+      apiKeyPrefix: apiKey ? apiKey.substring(0, 10) : 'none',
     });
     
-    // Don't expose internal errors
+    // Return more detailed error in development
+    const isDev = process.env.NODE_ENV !== 'production';
     return res.status(500).json({ 
-      error: 'AI service temporarily unavailable. Please try again.' 
+      error: isDev 
+        ? `AI Gateway error: ${error.message}` 
+        : 'AI service temporarily unavailable. Please try again.',
+      ...(isDev && { details: error.stack })
     });
   }
 };
