@@ -77,10 +77,10 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Get API key
-    const apiKey = process.env.AI_GATEWAY_API_KEY;
+    // Get API key (support both GAME_INTELLIGENCE and AI_GATEWAY_API_KEY)
+    const apiKey = process.env.GAME_INTELLIGENCE || process.env.AI_GATEWAY_API_KEY;
     if (!apiKey) {
-      console.error('Missing AI_GATEWAY_API_KEY');
+      console.error('Missing GAME_INTELLIGENCE or AI_GATEWAY_API_KEY');
       return res.status(500).json({ error: 'Server configuration error' });
     }
 
