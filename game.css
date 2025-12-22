@@ -17,6 +17,31 @@ body {
     justify-content: center;
 }
 
+/* GitHub Repo Link */
+.github-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    color: #666;
+    opacity: 0.5;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.github-link:hover {
+    opacity: 1;
+    color: #00ff00;
+}
+
+.github-link svg {
+    width: 20px;
+    height: 20px;
+}
+
 .terminal {
     width: 100%;
     height: 100vh;
