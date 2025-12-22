@@ -288,4 +288,14 @@ body {
         font-size: 0.65rem;
         max-width: 300px;
     }
+    
+    .github-link {
+        top: 0.5rem;
+        left: 0.5rem;
+    }
+    
+    .github-link svg {
+        width: 18px;
+        height: 18px;
+    }
 }
