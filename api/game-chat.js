@@ -3,6 +3,7 @@
 // Implements Socratic game master moderator
 
 const { streamText } = require('ai');
+const { mistral } = require('@ai-sdk/mistral');
 const fs = require('fs');
 const path = require('path');
 
@@ -101,19 +102,21 @@ module.exports = async function handler(req, res) {
       process.env.AI_GATEWAY_API_KEY = apiKey;
     }
 
-    // Model selection via string (Gateway routes it)
-    // Format: "provider/model-name" for Vercel AI Gateway
-    const modelName = process.env.GAME_MODEL || 'mistral/devstral-2';
+    // Model selection - using provider instance for explicit API key control
+    // This approach works better with Vercel AI Gateway when using custom env var names
+    const modelName = process.env.GAME_MODEL || 'devstral-2';
     // Examples:
-    // - "mistral/devstral-2" (current)
-    // - "mistral/mistral-large-latest"
-    // - "anthropic/claude-3-5-sonnet-20241022"
+    // - "devstral-2" (current)
+    // - "mistral-large-latest"
+    // - For other providers, use their respective provider instances
 
     // Stream response with strict limits
-    // AI SDK automatically uses AI_GATEWAY_API_KEY from environment when using string model names
-    console.log('Calling AI Gateway with model:', modelName);
+    // Using provider instance allows explicit API key passing
+    console.log('Calling AI Gateway with model:', modelName, 'using provider instance');
     const result = streamText({
-      model: modelName, // String model name (Gateway routes it automatically)
+      model: mistral(modelName, {
+        apiKey: apiKey, // Explicitly pass Vercel AI Gateway API key
+      }),
       system: SYSTEM_PROMPT, // System prompt (NOT in messages array)
       messages: sanitizedMessages, // Only user/assistant messages
       maxTokens: 150, // Enforce brevity
