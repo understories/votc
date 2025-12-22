@@ -78,10 +78,17 @@ module.exports = async function handler(req, res) {
     }
 
     // Get API key (support both GAME_INTELLIGENCE and AI_GATEWAY_API_KEY)
+    // Set in environment so AI SDK can use it automatically
     const apiKey = process.env.GAME_INTELLIGENCE || process.env.AI_GATEWAY_API_KEY;
     if (!apiKey) {
       console.error('Missing GAME_INTELLIGENCE or AI_GATEWAY_API_KEY');
       return res.status(500).json({ error: 'Server configuration error' });
+    }
+
+    // Set API key in environment for AI SDK to use
+    // AI Gateway will automatically use AI_GATEWAY_API_KEY from env
+    if (!process.env.AI_GATEWAY_API_KEY && apiKey) {
+      process.env.AI_GATEWAY_API_KEY = apiKey;
     }
 
     // Model selection via string (Gateway routes it)
@@ -92,9 +99,9 @@ module.exports = async function handler(req, res) {
     // - "anthropic/claude-3-5-sonnet-20241022"
 
     // Stream response with strict limits
+    // AI SDK will automatically use AI_GATEWAY_API_KEY from environment
     const result = streamText({
       model: modelName, // String model name (Gateway routes it)
-      apiKey: apiKey, // Gateway API key
       system: SYSTEM_PROMPT, // System prompt (NOT in messages array)
       messages: sanitizedMessages, // Only user/assistant messages
       maxTokens: 150, // Enforce brevity
