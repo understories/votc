@@ -3,7 +3,6 @@
 // Implements Socratic game master moderator
 
 const { streamText } = require('ai');
-const { mistral } = require('@ai-sdk/mistral');
 const fs = require('fs');
 const path = require('path');
 
@@ -49,8 +48,11 @@ ${INTERNAL_THOUGHTS ? `\nINTERNAL DESIGN NOTES (use to inform questions, help pa
 CRITICAL: Your role is to probe with questions, not to lecture or provide answers. Use the internal thoughts to inform your questions, but help participants discover these concepts themselves through dialogue. Keep responses concise and terminal-friendly.`;
 
 module.exports = async function handler(req, res) {
+  console.log('[game-chat] Request received:', req.method, req.url);
+  
   // Only allow POST requests
   if (req.method !== 'POST') {
+    console.log('[game-chat] Method not allowed:', req.method);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -59,6 +61,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const { messages } = req.body;
+    console.log('[game-chat] Messages received:', messages?.length || 0);
 
     // Validate input
     if (!messages || !Array.isArray(messages)) {
@@ -90,8 +93,15 @@ module.exports = async function handler(req, res) {
     // Vercel AI SDK automatically reads AI_GATEWAY_API_KEY from environment
     // If GAME_INTELLIGENCE is set, use it as the API key
     const apiKey = process.env.GAME_INTELLIGENCE || process.env.AI_GATEWAY_API_KEY;
+    console.log('[game-chat] API key check:', {
+      hasGAME_INTELLIGENCE: !!process.env.GAME_INTELLIGENCE,
+      hasAI_GATEWAY_API_KEY: !!process.env.AI_GATEWAY_API_KEY,
+      hasApiKey: !!apiKey,
+      apiKeyPrefix: apiKey ? apiKey.substring(0, 15) + '...' : 'none',
+    });
+    
     if (!apiKey) {
-      console.error('Missing GAME_INTELLIGENCE or AI_GATEWAY_API_KEY');
+      console.error('[game-chat] Missing GAME_INTELLIGENCE or AI_GATEWAY_API_KEY');
       return res.status(500).json({ error: 'Server configuration error' });
     }
 
@@ -102,30 +112,40 @@ module.exports = async function handler(req, res) {
       process.env.AI_GATEWAY_API_KEY = apiKey;
     }
 
-    // Model selection - using provider instance for explicit API key control
-    // This approach works better with Vercel AI Gateway when using custom env var names
-    const modelName = process.env.GAME_MODEL || 'devstral-2';
+    // Model selection - use string format for Vercel AI Gateway
+    // String format "provider/model" automatically routes through AI Gateway
+    // CRITICAL: AI_GATEWAY_API_KEY must be set in environment for this to work
+    const modelName = process.env.GAME_MODEL || 'mistral/devstral-2';
     // Examples:
-    // - "devstral-2" (current)
-    // - "mistral-large-latest"
-    // - For other providers, use their respective provider instances
+    // - "mistral/devstral-2" (current)
+    // - "mistral/mistral-large-latest"
+    // - "anthropic/claude-3-5-sonnet-20241022"
 
-    // Stream response with strict limits
-    // Using provider instance allows explicit API key passing
-    console.log('Calling AI Gateway with model:', modelName, 'using provider instance');
-    const result = streamText({
-      model: mistral(modelName, {
-        apiKey: apiKey, // Explicitly pass Vercel AI Gateway API key
-      }),
-      system: SYSTEM_PROMPT, // System prompt (NOT in messages array)
-      messages: sanitizedMessages, // Only user/assistant messages
-      maxTokens: 150, // Enforce brevity
-      temperature: 0.7,
-    });
+    console.log('[game-chat] Calling AI Gateway with string model:', modelName);
+    console.log('[game-chat] Message count:', sanitizedMessages.length);
+    console.log('[game-chat] AI_GATEWAY_API_KEY set:', !!process.env.AI_GATEWAY_API_KEY);
+    
+    try {
+      // Use string model name - SDK automatically routes through AI Gateway
+      // when it sees the "provider/model" format and AI_GATEWAY_API_KEY is set
+      const result = streamText({
+        model: modelName, // String format routes through Gateway
+        system: SYSTEM_PROMPT, // System prompt (NOT in messages array)
+        messages: sanitizedMessages, // Only user/assistant messages
+        maxTokens: 150, // Enforce brevity
+        temperature: 0.7,
+      });
 
-    console.log('StreamText result created, returning stream response');
-    // Return text stream (simplest for terminal typewriter effect)
-    return result.toTextStreamResponse();
+      console.log('[game-chat] StreamText result created, returning stream response');
+      // Return text stream (simplest for terminal typewriter effect)
+      return result.toTextStreamResponse();
+    } catch (streamError) {
+      console.error('[game-chat] Error in streamText call:', {
+        message: streamError.message,
+        stack: streamError.stack,
+      });
+      throw streamError;
+    }
 
   } catch (error) {
     console.error('AI Gateway error:', {
