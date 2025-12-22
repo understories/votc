@@ -8,6 +8,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.0",
     "@ai-sdk/mistral": "^3.0.0",
+    "@octokit/rest": "^22.0.1",
     "ai": "^6.0.1",
     "googleapis": "^126.0.1"
   },

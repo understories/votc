@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let messageHistory = [];
     let turnCount = 0;
     const MAX_TURNS = 12;
+    let selectedText = null;
+    let selectedMessages = [];
 
     // Update initial question to welcome message
     const questionLine = document.querySelector('.question');
@@ -87,7 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayMessage(role, content) {
         const output = document.getElementById('output');
         const line = document.createElement('div');
-        line.className = 'terminal-line';
+        line.className = 'terminal-line message-line';
+        line.dataset.role = role;
+        line.dataset.content = content;
         
         const prompt = document.createElement('span');
         prompt.className = 'prompt';
@@ -101,6 +105,11 @@ document.addEventListener('DOMContentLoaded', function() {
         line.appendChild(text);
         output.appendChild(line);
         output.scrollTop = output.scrollHeight;
+        
+        // Add click handler for selection
+        line.addEventListener('click', function() {
+            selectMessage(line, role, content);
+        });
     }
 
     function createStreamingMessageElement() {
@@ -197,6 +206,128 @@ document.addEventListener('DOMContentLoaded', function() {
     input.addEventListener('blur', function() {
         if (turnCount < MAX_TURNS) {
             input.focus();
+        }
+    });
+
+    // Text selection functionality
+    function selectMessage(line, role, content) {
+        // Clear previous selection
+        clearSelection();
+        
+        // Select this message
+        line.classList.add('selected');
+        selectedText = `${role === 'user' ? '>' : '$'} ${content}`;
+        selectedMessages = [{ role, content }];
+        
+        // Show share button
+        showShareButton();
+    }
+
+    function clearSelection() {
+        document.querySelectorAll('.message-line.selected').forEach(line => {
+            line.classList.remove('selected');
+        });
+        selectedText = null;
+        selectedMessages = [];
+        hideShareButton();
+    }
+
+    function showShareButton() {
+        // Remove existing button if any
+        hideShareButton();
+        
+        const button = document.createElement('button');
+        button.id = 'share-to-github-btn';
+        button.className = 'share-button';
+        button.textContent = 'Share to GitHub';
+        button.addEventListener('click', shareToGitHub);
+        
+        const output = document.getElementById('output');
+        output.appendChild(button);
+    }
+
+    function hideShareButton() {
+        const button = document.getElementById('share-to-github-btn');
+        if (button) {
+            button.remove();
+        }
+    }
+
+    async function shareToGitHub() {
+        if (!selectedText || selectedMessages.length === 0) {
+            displayError('No text selected');
+            return;
+        }
+
+        const button = document.getElementById('share-to-github-btn');
+        if (button) {
+            button.disabled = true;
+            button.textContent = 'Sharing...';
+        }
+
+        try {
+            const response = await fetch('/api/share-to-github', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    excerpt: selectedText,
+                    context: {
+                        messages: selectedMessages,
+                    }
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to share');
+            }
+
+            // Show success message
+            displaySuccess(data.url, data.filename);
+            
+            // Clear selection
+            clearSelection();
+
+        } catch (error) {
+            displayError(`Failed to share: ${error.message}`);
+            if (button) {
+                button.disabled = false;
+                button.textContent = 'Share to GitHub';
+            }
+        }
+    }
+
+    function displaySuccess(url, filename) {
+        const output = document.getElementById('output');
+        const line = document.createElement('div');
+        line.className = 'terminal-line success-message';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'prompt';
+        prompt.textContent = '✓';
+        prompt.style.color = '#00ff00';
+        
+        const text = document.createElement('span');
+        text.className = 'success-text';
+        text.innerHTML = `Shared! <a href="${url}" target="_blank" rel="noopener" style="color: #00ff00; text-decoration: underline;">View on GitHub</a>`;
+        text.style.color = '#00ff00';
+        
+        line.appendChild(prompt);
+        line.appendChild(text);
+        output.appendChild(line);
+        output.scrollTop = output.scrollHeight;
+        
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            line.remove();
+        }, 5000);
+    }
+
+    // Click outside to deselect
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.message-line') && !e.target.closest('.share-button')) {
+            clearSelection();
         }
     });
 });
