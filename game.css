@@ -130,6 +130,62 @@ body {
     }
 }
 
+.ai-message-streaming {
+    animation: blink 1s infinite;
+}
+
+.user-message {
+    color: #00ff00;
+}
+
+.ai-message {
+    color: #fff;
+}
+
+.loading-indicator {
+    opacity: 0.7;
+}
+
+.loading-text {
+    color: #666;
+    font-style: italic;
+}
+
+.error-message {
+    margin-top: 1rem;
+}
+
+.error-text {
+    color: #ff4444;
+}
+
+/* LLM Information Footer */
+.llm-info {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    font-size: 0.75rem;
+    color: #666;
+    max-width: 400px;
+    line-height: 1.4;
+}
+
+.llm-info a {
+    color: #00ff00;
+    text-decoration: none;
+}
+
+.llm-info a:hover {
+    text-decoration: underline;
+}
+
+.model-note {
+    font-size: 0.7rem;
+    color: #555;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
 @media (max-width: 768px) {
     .terminal {
         padding: var(--spacing-md, 1.5rem);
@@ -141,5 +197,10 @@ body {
     
     .question {
         font-size: 1.1rem;
+    }
+    
+    .llm-info {
+        font-size: 0.65rem;
+        max-width: 300px;
     }
 }

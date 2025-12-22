@@ -1,92 +1,201 @@
+// Game Terminal Chat Interface
+// Implements Socratic game master moderator with text streaming
+
 document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('terminal-input');
     const output = document.getElementById('output');
     const cursor = document.querySelector('.cursor');
-    let waitingForContinue = false;
     
-    const responseText = `This is the beginning of a decade-long game that slowly becomes a real village.
-Join the commoners as we shape the future of our valley together.
+    let messageHistory = [];
+    let turnCount = 0;
+    const MAX_TURNS = 12;
 
-You can:
-Propose a tool.
-Add a rule.
-Name a place.
-Create a quest.
-Document a path.
-Bind myth to reality.
-
-The Valley of the Commons.
-A commons game for commoners.`;
-
-    function processInput() {
-        const userInput = input.value.trim().toLowerCase();
-        
-        if (userInput === 'yes') {
-            // Hide input line
-            document.getElementById('input-line').style.display = 'none';
-            
-            // Show output
-            output.textContent = responseText;
-            output.classList.add('show');
-            
-            // After showing the message, append second message at bottom
-            setTimeout(function() {
-                const secondMessage = '\n\ncommoning soon on github\n\npress enter to continue';
-                output.textContent = responseText + secondMessage;
-                waitingForContinue = true;
-            }, 10000); // Wait 10 seconds before showing "press enter to continue"
-        } else if (userInput === 'no') {
-            // Hide input line
-            document.getElementById('input-line').style.display = 'none';
-            
-            // Show friendly message and wait for user to press enter
-            const noMessage = `The commons belong to everyone.
-This game is open, collaborative, and free.
-All are welcome to participate in their own way.
-
-press enter to continue`;
-            
-            output.textContent = noMessage;
-            output.classList.add('show');
-            waitingForContinue = true; // Wait for user to press enter before redirecting
-        } else {
-            // Clear input on any other response
-            input.value = '';
-        }
+    // Update initial question to welcome message
+    const questionLine = document.querySelector('.question');
+    if (questionLine) {
+        questionLine.textContent = 'Welcome to the Valley. What would you like to explore?';
     }
 
-    function handleEnter(e) {
-        if (e) {
-            e.preventDefault();
-        }
-        
-        if (waitingForContinue) {
-            // Redirect to homepage
-            window.location.href = 'index.html';
+    async function sendMessage(userInput) {
+        // Check turn limit
+        if (turnCount >= MAX_TURNS) {
+            displayMessage('system', 'Conversation limit reached. The game master has stepped away.');
             return;
         }
+
+        // Add user message to history
+        messageHistory.push({ role: 'user', content: userInput });
+        turnCount++;
         
-        // Process the user's input
-        processInput();
+        // Display user message
+        displayMessage('user', userInput);
+        
+        // Show loading indicator
+        showLoadingIndicator('AI is thinking...');
+        
+        try {
+            const response = await fetch('/api/game-chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: messageHistory })
+            });
+
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({ error: `API error: ${response.status}` }));
+                throw new Error(error.error || `API error: ${response.status}`);
+            }
+
+            // Text stream (simple: just append chunks)
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let aiMessage = '';
+            
+            // Create streaming message element
+            const streamingElement = createStreamingMessageElement();
+            
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                
+                // Decode chunk and append directly (text stream, no parsing needed)
+                const chunk = decoder.decode(value, { stream: true });
+                aiMessage += chunk;
+                
+                // Update UI (typewriter effect)
+                updateStreamingMessage(streamingElement, aiMessage);
+            }
+            
+            // Finalize streaming element
+            finalizeStreamingMessage(streamingElement);
+            
+            // Add to history
+            messageHistory.push({ role: 'assistant', content: aiMessage });
+            hideLoadingIndicator();
+            
+            // Check if approaching limit
+            if (turnCount >= MAX_TURNS - 2) {
+                displayMessage('system', `[${MAX_TURNS - turnCount} exchanges remaining]`);
+            }
+            
+        } catch (error) {
+            displayError('Connection error. Please try again.');
+            hideLoadingIndicator();
+            console.error('Chat error:', error);
+        }
     }
 
-    // Listen for Enter key on input
+    function displayMessage(role, content) {
+        const output = document.getElementById('output');
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'prompt';
+        prompt.textContent = role === 'user' ? '>' : '$';
+        
+        const text = document.createElement('span');
+        text.className = role === 'user' ? 'user-message' : 'ai-message';
+        text.textContent = content;
+        
+        line.appendChild(prompt);
+        line.appendChild(text);
+        output.appendChild(line);
+        output.scrollTop = output.scrollHeight;
+    }
+
+    function createStreamingMessageElement() {
+        const output = document.getElementById('output');
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'prompt';
+        prompt.textContent = '$';
+        
+        const text = document.createElement('span');
+        text.className = 'ai-message ai-message-streaming';
+        text.textContent = '';
+        
+        line.appendChild(prompt);
+        line.appendChild(text);
+        output.appendChild(line);
+        
+        return text;
+    }
+
+    function updateStreamingMessage(element, content) {
+        element.textContent = content;
+        const output = document.getElementById('output');
+        output.scrollTop = output.scrollHeight;
+    }
+
+    function finalizeStreamingMessage(element) {
+        element.classList.remove('ai-message-streaming');
+    }
+
+    function showLoadingIndicator(message) {
+        const output = document.getElementById('output');
+        const indicator = document.createElement('div');
+        indicator.className = 'terminal-line loading-indicator';
+        indicator.id = 'loading-indicator';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'prompt';
+        prompt.textContent = '$';
+        
+        const text = document.createElement('span');
+        text.className = 'loading-text';
+        text.textContent = message;
+        
+        indicator.appendChild(prompt);
+        indicator.appendChild(text);
+        output.appendChild(indicator);
+        output.scrollTop = output.scrollHeight;
+    }
+
+    function hideLoadingIndicator() {
+        const indicator = document.getElementById('loading-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+    }
+
+    function displayError(message) {
+        const output = document.getElementById('output');
+        const line = document.createElement('div');
+        line.className = 'terminal-line error-message';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'prompt';
+        prompt.textContent = '!';
+        prompt.style.color = '#ff4444';
+        
+        const text = document.createElement('span');
+        text.className = 'error-text';
+        text.textContent = message;
+        text.style.color = '#ff4444';
+        
+        line.appendChild(prompt);
+        line.appendChild(text);
+        output.appendChild(line);
+        output.scrollTop = output.scrollHeight;
+    }
+
+    // Handle Enter key
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            handleEnter(e);
+            e.preventDefault();
+            const userInput = input.value.trim();
+            if (userInput) {
+                sendMessage(userInput);
+                input.value = '';
+            }
         }
     });
     
-    // Also listen for Enter key on document (for when input is hidden)
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            handleEnter(e);
-        }
-    });
-    
-    // Keep focus on input when not waiting for continue
+    // Keep focus on input
     input.addEventListener('blur', function() {
-        if (!waitingForContinue) {
+        if (turnCount < MAX_TURNS) {
             input.focus();
         }
     });
