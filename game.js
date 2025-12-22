@@ -245,14 +245,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const defaultButton = document.createElement('button');
         defaultButton.id = 'share-default-btn';
         defaultButton.className = 'share-button share-button-default';
-        defaultButton.textContent = 'Share (default account)';
+        defaultButton.textContent = 'share on github repo (default account)';
         defaultButton.addEventListener('click', () => shareToGitHub('default'));
         
         // Own account button (redirects to GitHub)
         const ownButton = document.createElement('button');
         ownButton.id = 'share-own-btn';
         ownButton.className = 'share-button share-button-own';
-        ownButton.textContent = 'Share (my account)';
+        ownButton.textContent = 'share on github repo (my account)';
         ownButton.addEventListener('click', () => shareToGitHub('own'));
         
         buttonContainer.appendChild(defaultButton);
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayError(`Failed to share: ${error.message}`);
             if (defaultButton) {
                 defaultButton.disabled = false;
-                defaultButton.textContent = 'Share (default account)';
+                defaultButton.textContent = 'share on github repo (default account)';
             }
             if (ownButton) {
                 ownButton.disabled = false;
