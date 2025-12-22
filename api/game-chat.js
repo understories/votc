@@ -2,6 +2,12 @@
 // Uses Vercel AI Gateway with string model names
 // Implements Socratic game master moderator
 
+// CRITICAL: Set AI_GATEWAY_API_KEY before requiring 'ai' SDK
+// The SDK reads this at initialization time
+if (!process.env.AI_GATEWAY_API_KEY && process.env.GAME_INTELLIGENCE) {
+  process.env.AI_GATEWAY_API_KEY = process.env.GAME_INTELLIGENCE;
+}
+
 const { streamText } = require('ai');
 const fs = require('fs');
 const path = require('path');
