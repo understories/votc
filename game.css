@@ -28,6 +28,7 @@ body {
     align-items: center;
 }
 
+.home-link,
 .github-link,
 .privacy-link {
     color: #666;
@@ -39,10 +40,16 @@ body {
     justify-content: center;
 }
 
+.home-link:hover,
 .github-link:hover,
 .privacy-link:hover {
     opacity: 1;
     color: #00ff00;
+}
+
+.home-link svg {
+    width: 18px;
+    height: 18px;
 }
 
 .github-link svg,
