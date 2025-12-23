@@ -38,3 +38,5 @@ credentials.json
 # But allow .env.example to be committed
 !.env.example
 
+.vercel
+.env*.local
