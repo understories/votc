@@ -146,10 +146,11 @@ module.exports = async function handler(req, res) {
     // Model selection - use string format for Vercel AI Gateway
     // String format "provider/model" automatically routes through AI Gateway
     // CRITICAL: AI_GATEWAY_API_KEY must be set in environment for this to work
-    const modelName = process.env.GAME_MODEL || 'mistral/devstral-2';
+    // Try mistral-large-latest first (known working model), then devstral-2
+    const modelName = process.env.GAME_MODEL || 'mistral/mistral-large-latest';
     // Examples:
-    // - "mistral/devstral-2" (current)
-    // - "mistral/mistral-large-latest"
+    // - "mistral/mistral-large-latest" (current - more reliable)
+    // - "mistral/devstral-2" (if available)
     // - "anthropic/claude-3-5-sonnet-20241022"
 
     console.log('[game-chat] Calling AI Gateway with string model:', modelName);
