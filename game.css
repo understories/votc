@@ -532,32 +532,82 @@ body {
 }
 
 @media (max-width: 768px) {
+    body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
     .terminal {
-        padding: var(--spacing-md, 1.5rem);
+        padding: 1rem;
+        padding-top: 3.5rem; /* Space for top links */
+        padding-bottom: 6rem; /* Space for input and footer */
+        min-height: 100vh;
+        height: auto;
+    }
+    
+    .terminal-content {
+        max-width: 100%;
     }
     
     .terminal-line {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
     }
     
     .question {
-        font-size: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    #input-line {
+        padding: 0.75rem 0;
+        margin-top: 1rem;
+    }
+    
+    #terminal-input {
+        font-size: 0.95rem;
+    }
+    
+    .submit-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .full-chat-share-container {
+        position: relative; /* Not sticky on mobile */
+        bottom: auto;
+        margin-bottom: 1rem;
+    }
+    
+    .share-button {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+        min-width: auto;
     }
     
     .llm-info {
-        font-size: 0.55rem;
-        max-width: 250px;
-        bottom: 0.25rem;
-        left: 0.5rem;
+        position: relative;
+        bottom: auto;
+        left: auto;
+        margin-top: 2rem;
+        padding: 1rem;
+        font-size: 0.7rem;
+        max-width: 100%;
     }
     
     .model-note {
-        font-size: 0.5rem;
+        font-size: 0.65rem;
     }
     
-    .github-link {
+    .top-links {
+        position: fixed;
         top: 0.5rem;
         left: 0.5rem;
+        z-index: 1000;
+    }
+    
+    .github-link svg {
+        width: 18px;
+        height: 18px;
     }
     
     .share-modal {
@@ -582,10 +632,5 @@ body {
     
     .share-modal-footer .share-button {
         width: 100%;
-    }
-    
-    .github-link svg {
-        width: 18px;
-        height: 18px;
     }
 }
