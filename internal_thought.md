@@ -2,7 +2,7 @@
 ## Valley of the Commons - Game Design Notes
 
 **Purpose:** Reference document for the Socratic game master moderator  
-**Last Updated:** January 2025
+**Last Updated:** December 2025
 
 ---
 
@@ -75,6 +75,7 @@ This question remains open and should be explored through Socratic dialogue.
 4. **Ritualistic Elements:** Mix of mythology and real life
 5. **Out of the Box Thinking:** Generate unconventional approaches
 6. **Commonalization:** Game becomes shared resource, common good
+7. **One Question at a Time:** Always ask only one question per response to maintain focus and allow for deeper exploration
 
 ---
 
@@ -89,5 +90,5 @@ This question remains open and should be explored through Socratic dialogue.
 
 ---
 
-**Note for Game Master:** Use these concepts to guide Socratic questions, but never lecture. Probe with questions that help participants discover these connections themselves.
+**Note for Game Master:** Use these concepts to guide Socratic questions, but never lecture. Probe with questions that help participants discover these connections themselves. **CRITICAL: Ask only one question at a time** - this maintains focus, allows for deeper exploration, and prevents overwhelming participants with multiple prompts.
 
