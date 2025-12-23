@@ -1,5 +1,8 @@
 // Vercel serverless function to share conversation excerpts to GitHub
-// Creates idea files in build_game/ideas/ directory
+// Creates files directly in the repository (NOT issues) using GitHub API
+// Uses GITHUB_TOKEN (github.com/vrnvrn account) to create files in:
+//   - build_game/ideas/ for selected excerpts
+//   - build_game/conversations/ for full chat history
 
 const { Octokit } = require('@octokit/rest');
 
