@@ -7,22 +7,58 @@
     <link rel="stylesheet" href="game.css">
     <style>
         /* Override body styles for privacy page to allow scrolling */
-        body {
+        html {
             overflow: auto !important;
             height: auto !important;
+        }
+        
+        body {
+            overflow: auto !important;
+            overflow-x: hidden !important;
+            height: auto !important;
             min-height: 100vh;
+            min-height: 100dvh; /* Dynamic viewport height for mobile */
             display: block !important;
             align-items: unset !important;
             justify-content: unset !important;
+            position: relative !important;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+        
+        /* Override terminal styles that might interfere */
+        .terminal {
+            display: none !important;
         }
         
         .privacy-container {
             max-width: 800px;
             margin: 0 auto;
             padding: 2rem;
+            padding-top: 4rem; /* Space for top links if they exist */
             color: #00ff00;
             font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
             min-height: 100vh;
+            min-height: 100dvh;
+        }
+        
+        /* Mobile responsive padding */
+        @media (max-width: 768px) {
+            .privacy-container {
+                padding: 1rem;
+                padding-top: 3.5rem; /* Space for top links */
+            }
+            
+            .privacy-header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .privacy-section h2 {
+                font-size: 1.1rem;
+            }
+            
+            .privacy-section h3 {
+                font-size: 0.95rem;
+            }
         }
         
         .privacy-header {
