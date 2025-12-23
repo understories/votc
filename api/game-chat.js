@@ -150,13 +150,17 @@ module.exports = async function handler(req, res) {
 
       console.log('[game-chat] StreamText result created');
       
-      // Log first chunk to verify stream is working
-      result.textStream.then(async (stream) => {
-        const firstChunk = await stream.next();
-        console.log('[game-chat] First chunk received:', firstChunk);
-      }).catch((streamError) => {
-        console.error('[game-chat] Stream error:', streamError.message, streamError.stack);
-      });
+      // Monitor stream for errors (fire and forget)
+      (async () => {
+        try {
+          for await (const chunk of result.textStream) {
+            console.log('[game-chat] Stream chunk received:', chunk.substring(0, 50));
+            break; // Just log first chunk
+          }
+        } catch (streamError) {
+          console.error('[game-chat] Stream error:', streamError.message, streamError.stack);
+        }
+      })();
       
       // Return text stream (simplest for terminal typewriter effect)
       // Set proper headers for streaming
