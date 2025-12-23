@@ -171,17 +171,28 @@ module.exports = async function handler(req, res) {
 
       console.log('[game-chat] StreamText result created');
       
-      // Handle potential stream errors before returning
-      result.textStream.catch((error) => {
-        console.error('[game-chat] Stream error caught:', error.message);
-      });
-      
       // Return text stream (simplest for terminal typewriter effect)
       // toTextStreamResponse() creates a Response object that streams the text
+      // The Response will handle streaming automatically
       const streamResponse = result.toTextStreamResponse();
       console.log('[game-chat] Stream response created, sending to client');
       
-      // Ensure response is sent
+      // Log when stream actually starts (fire and forget)
+      (async () => {
+        try {
+          // Wait a bit to see if stream starts
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          const firstChunk = await result.textStream.next();
+          if (firstChunk.done) {
+            console.log('[game-chat] Stream completed immediately');
+          } else {
+            console.log('[game-chat] Stream started, first chunk:', firstChunk.value?.substring(0, 50));
+          }
+        } catch (streamError) {
+          console.error('[game-chat] Stream error in monitor:', streamError.message);
+        }
+      })();
+      
       return streamResponse;
     } catch (streamError) {
       console.error('[game-chat] Error in streamText call:', {
