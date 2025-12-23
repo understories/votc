@@ -170,24 +170,9 @@ module.exports = async function handler(req, res) {
 
       console.log('[game-chat] StreamText result created');
       
-      // Monitor stream for errors (fire and forget)
-      (async () => {
-        try {
-          for await (const chunk of result.textStream) {
-            console.log('[game-chat] Stream chunk received:', chunk.substring(0, 50));
-            break; // Just log first chunk
-          }
-        } catch (streamError) {
-          console.error('[game-chat] Stream error:', streamError.message, streamError.stack);
-        }
-      })();
-      
       // Return text stream (simplest for terminal typewriter effect)
-      // Set proper headers for streaming
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Connection', 'keep-alive');
-      
+      // toTextStreamResponse() creates a Response object that streams the text
+      // Don't consume the stream here - let it stream to the client
       const streamResponse = result.toTextStreamResponse();
       console.log('[game-chat] Stream response created, sending to client');
       return streamResponse;
