@@ -139,6 +139,7 @@ module.exports = async function handler(req, res) {
     try {
       // Use string model name - SDK automatically routes through AI Gateway
       // when it sees the "provider/model" format and AI_GATEWAY_API_KEY is set
+      console.log('[game-chat] Creating streamText with model:', modelName);
       const result = streamText({
         model: modelName, // String format routes through Gateway
         system: SYSTEM_PROMPT, // System prompt (NOT in messages array)
@@ -147,11 +148,14 @@ module.exports = async function handler(req, res) {
         temperature: 0.7,
       });
 
-      console.log('[game-chat] StreamText result created, returning stream response');
+      console.log('[game-chat] StreamText result created');
       
-      // Handle stream errors
-      result.textStream.catch((streamError) => {
-        console.error('[game-chat] Stream error:', streamError);
+      // Log first chunk to verify stream is working
+      result.textStream.then(async (stream) => {
+        const firstChunk = await stream.next();
+        console.log('[game-chat] First chunk received:', firstChunk);
+      }).catch((streamError) => {
+        console.error('[game-chat] Stream error:', streamError.message, streamError.stack);
       });
       
       // Return text stream (simplest for terminal typewriter effect)
