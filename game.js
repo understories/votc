@@ -539,8 +539,24 @@ ${prefix} ${msg.content}`;
     function shareWithOwnAccount(content) {
         const filename = `idea-${new Date().toISOString().slice(0, 19).replace(/:/g, '-').replace('T', '-')}.md`;
         
+        // Extract title from content (first line after "# Idea: ")
+        let titleText = 'Idea from conversation';
+        if (content) {
+            const firstLine = content.split('\n')[0];
+            const titleMatch = firstLine.match(/^# Idea:\s*(.+)$/);
+            if (titleMatch && titleMatch[1]) {
+                titleText = titleMatch[1].trim();
+            } else if (selectedText) {
+                // Fallback to selectedText if available
+                titleText = selectedText.slice(0, 50);
+            }
+        } else if (selectedText) {
+            // Fallback to selectedText if content is not provided
+            titleText = selectedText.slice(0, 50);
+        }
+        
         // Encode content for URL
-        const issueTitle = encodeURIComponent(`Idea: ${selectedText.slice(0, 50)}...`);
+        const issueTitle = encodeURIComponent(`Idea: ${titleText.length > 50 ? titleText.substring(0, 50) + '...' : titleText}`);
         const issueBody = encodeURIComponent(`This idea was generated from a game master conversation.\n\n## File Content\n\nTo add this as a file in \`build_game/ideas/\`, use this content:\n\n\`\`\`markdown\n${content}\n\`\`\`\n\n**Suggested filename:** \`${filename}\`\n\n---\n\n*You can copy the markdown above and create a new file in the repo, or convert this issue to a pull request.*`);
         
         const owner = 'understories';
