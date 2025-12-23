@@ -70,6 +70,7 @@ body {
     padding-top: 4rem; /* Space for top links */
     padding-bottom: 0; /* Input line handles its own space */
     position: relative;
+    min-height: 0; /* Allow flex shrinking */
 }
 
 .terminal-content {
@@ -79,6 +80,7 @@ body {
     flex-direction: column;
     height: 100%;
     position: relative;
+    min-height: 0; /* Allow flex shrinking */
 }
 
 .terminal-line {
@@ -101,10 +103,13 @@ body {
 }
 
 #input-line {
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background: #000;
     padding: 1rem 0;
-    margin-top: 1.5rem;
+    margin-top: 0;
     z-index: 10;
     border-top: 1px solid #333;
     display: flex;
@@ -184,8 +189,9 @@ body {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-bottom: 1rem;
+    padding-bottom: 5rem; /* Space for input line */
     -webkit-overflow-scrolling: touch;
+    min-height: 0; /* Allow flex shrinking */
 }
 
 .terminal-output.show {
@@ -312,6 +318,23 @@ body {
 
 .full-chat-share-container button {
     pointer-events: auto; /* Re-enable clicks for the button */
+}
+
+/* Desktop: Keep input fixed at bottom like real CLI */
+@media (min-width: 769px) {
+    #input-line {
+        position: absolute;
+        bottom: 0;
+    }
+    
+    .terminal-output {
+        padding-bottom: 5rem; /* Space for fixed input line */
+    }
+    
+    .full-chat-share-container {
+        position: absolute;
+        bottom: 4rem;
+    }
 }
 
 .share-button {
