@@ -82,20 +82,110 @@ Supporting **the church expansion lays the groundwork** for the Valley of the Co
 
 Together, we can turn vision into reality.
 
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js 18.x or higher
+- npm or yarn
+- Vercel account (for deployment)
+- Google Cloud account (for waitlist functionality)
+- Vercel AI Gateway API key (for game chat)
+- GitHub Personal Access Token (for idea sharing)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/understories/votc.git
+cd votc
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Set up environment variables (see below)
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+**Required for Waitlist:**
+- `GOOGLE_SERVICE_ACCOUNT` - Google Service Account JSON (as string)
+- `GOOGLE_SHEET_ID` - Google Sheets spreadsheet ID
+- `GOOGLE_SHEET_NAME` - Sheet name (optional, defaults to 'Waitlist')
+
+**Required for Game Chat:**
+- `GAME_INTELLIGENCE` or `AI_GATEWAY_API_KEY` - Vercel AI Gateway API key (starts with `vck_`)
+- `GAME_MODEL` - AI model name (optional, defaults to `mistral/ministral-3b`)
+
+**Required for GitHub Sharing:**
+- `GITHUB_TOKEN` - GitHub Personal Access Token
+- `GITHUB_OWNER` - Repository owner (optional, defaults to 'understories')
+- `GITHUB_REPO` - Repository name (optional, defaults to 'votc')
+- `GITHUB_BRANCH` - Branch name (optional, defaults to 'main')
+- `GITHUB_PATH` - Path for ideas (optional, defaults to 'build_game/ideas')
+
+**Note:** Never commit `.env` files. See `.env.example` for a template (if available).
+
+### Local Development
+
+1. For static pages (landing page, game page):
+```bash
+# Using Python 3
+python3 -m http.server 8000
+
+# Using Node.js
+npx http-server
+
+# Using PHP
+php -S localhost:8000
+```
+
+2. For full functionality with serverless functions:
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Run local development server
+npx vercel dev
+```
+
+The local server will be available at `http://localhost:3000` (or the port specified).
+
+### Deployment
+
+Deploy to Vercel:
+
+1. Install Vercel CLI: `npm i -g vercel`
+2. Run `vercel` and follow the prompts
+3. Set environment variables in Vercel dashboard (Settings → Environment Variables)
+4. Deploy: `vercel --prod`
+
+**Important:** All environment variables must be set in the Vercel dashboard for production.
+
 ## Project Structure
 
 ```
 votc/
 ├── index.html          # Main landing page
-├── styles.css          # Stylesheet
+├── game.html           # Game terminal interface
+├── privacy.html        # Privacy FAQ page
+├── styles.css          # Landing page stylesheet
+├── game.css            # Game page stylesheet
 ├── waitlist.js         # Waitlist form handler (client-side)
+├── game.js             # Game terminal logic
 ├── package.json        # Node.js dependencies
 ├── vercel.json         # Vercel configuration
+├── internal_thought.md # Game design context for AI
 ├── api/
-│   └── waitlist.js     # Serverless function for Google Sheets integration
-├── README.md           # This file
-├── commonshublogo.svg  # Commons Hub logo
-└── valley.webp         # Hero image
+│   ├── waitlist.js     # Serverless function for Google Sheets
+│   ├── game-chat.js    # Serverless function for AI chat
+│   └── share-to-github.js # Serverless function for GitHub sharing
+├── refs/               # Internal documentation (gitignored)
+└── README.md           # This file
 ```
 
 ## Waitlist Functionality
@@ -110,22 +200,6 @@ The site includes a waitlist form that securely stores email addresses in a priv
 
 **Security:** All Google Sheets credentials are stored in Vercel environment variables and never exposed to the client. The Google Sheet remains private even though the code is public.
 
-## Running Locally
-
-Simply open `index.html` in a web browser, or use a local server:
-
-```bash
-# Using Python 3
-python3 -m http.server 8000
-
-# Using Node.js (if you have http-server installed)
-npx http-server
-
-# Using PHP
-php -S localhost:8000
-```
-
-Then navigate to `http://localhost:8000` in your browser.
 
 ## Design Notes
 
