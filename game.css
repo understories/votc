@@ -676,6 +676,10 @@ body {
     /* LLM info - hide on mobile to save space */
     .llm-info {
         display: none !important; /* Hide on mobile to save space */
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
     }
     
     /* Share buttons - touch-friendly */
