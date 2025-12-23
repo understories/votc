@@ -249,6 +249,11 @@ body {
     margin-top: 1rem;
     margin-bottom: 1rem;
     display: flex;
+    position: sticky;
+    bottom: 4rem; /* Above input line */
+    background: #000;
+    padding: 0.5rem 0;
+    z-index: 9;
     justify-content: center;
 }
 
