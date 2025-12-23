@@ -96,6 +96,11 @@ document.addEventListener('DOMContentLoaded', function() {
             messageHistory.push({ role: 'assistant', content: aiMessage });
             hideLoadingIndicator();
             
+            // Show full chat share button if we have conversation history
+            if (messageHistory.length >= 2) {
+                showFullChatShareButton();
+            }
+            
             // Check if approaching limit
             if (turnCount >= MAX_TURNS - 2) {
                 displayMessage('system', `[${MAX_TURNS - turnCount} exchanges remaining]`);

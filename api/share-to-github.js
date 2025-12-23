@@ -57,7 +57,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { content, excerpt, context } = req.body;
+    const { content, excerpt, context, isFullChat } = req.body;
 
     // Prefer full content if provided, otherwise use excerpt for backwards compatibility
     let fileContent;
@@ -88,7 +88,12 @@ module.exports = async function handler(req, res) {
     const owner = process.env.GITHUB_OWNER || 'understories';
     const repo = process.env.GITHUB_REPO || 'votc';
     const branch = process.env.GITHUB_BRANCH || 'main';
-    const basePath = process.env.GITHUB_PATH || 'build_game/ideas';
+    
+    // Determine base path: conversations directory for full chats, ideas for excerpts
+    const isFullChatShare = isFullChat === true;
+    const basePath = isFullChatShare 
+      ? (process.env.GITHUB_CONVERSATIONS_PATH || 'build_game/conversations')
+      : (process.env.GITHUB_PATH || 'build_game/ideas');
 
     // Initialize Octokit
     const octokit = new Octokit({
@@ -102,11 +107,15 @@ module.exports = async function handler(req, res) {
     // fileContent is already set above (either from content param or generated from excerpt)
 
     // Create file in GitHub
+    const commitMessage = isFullChatShare 
+      ? 'Add full conversation from game master dialogue'
+      : 'Add idea from game master conversation';
+    
     const response = await octokit.repos.createOrUpdateFileContents({
       owner: owner,
       repo: repo,
       path: path,
-      message: 'Add idea from game master conversation',
+      message: commitMessage,
       content: Buffer.from(fileContent).toString('base64'),
       branch: branch,
     });
