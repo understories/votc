@@ -60,8 +60,21 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  console.log('[share-to-github] Request received:', {
+    method: req.method,
+    hasBody: !!req.body,
+    bodyKeys: req.body ? Object.keys(req.body) : [],
+  });
+
   try {
     const { content, excerpt, context, isFullChat } = req.body;
+    
+    console.log('[share-to-github] Request data:', {
+      hasContent: !!content,
+      contentLength: content ? content.length : 0,
+      hasExcerpt: !!excerpt,
+      isFullChat: isFullChat,
+    });
 
     // Prefer full content if provided, otherwise use excerpt for backwards compatibility
     let fileContent;
@@ -85,8 +98,8 @@ module.exports = async function handler(req, res) {
     // Get GitHub configuration
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
-      console.error('Missing GITHUB_TOKEN');
-      return res.status(500).json({ error: 'Server configuration error' });
+      console.error('[share-to-github] Missing GITHUB_TOKEN');
+      return res.status(500).json({ error: 'Server configuration error: Missing GitHub token' });
     }
 
     const owner = process.env.GITHUB_OWNER || 'understories';
@@ -99,6 +112,16 @@ module.exports = async function handler(req, res) {
       ? (process.env.GITHUB_CONVERSATIONS_PATH || 'build_game/conversations')
       : (process.env.GITHUB_PATH || 'build_game/ideas');
 
+    console.log('[share-to-github] GitHub config:', {
+      owner,
+      repo,
+      branch,
+      basePath,
+      isFullChatShare,
+      hasToken: !!token,
+      tokenPrefix: token ? token.substring(0, 10) + '...' : 'none',
+    });
+
     // Initialize Octokit
     const octokit = new Octokit({
       auth: token,
@@ -108,6 +131,12 @@ module.exports = async function handler(req, res) {
     const filename = generateFilename(isFullChatShare);
     const path = `${basePath}/${filename}`;
 
+    console.log('[share-to-github] Creating file:', {
+      filename,
+      path,
+      contentLength: fileContent.length,
+    });
+
     // fileContent is already set above (either from content param or generated from excerpt)
 
     // Create file in GitHub
@@ -115,14 +144,33 @@ module.exports = async function handler(req, res) {
       ? 'Add full conversation from game master dialogue'
       : 'Add idea from game master conversation';
     
-    const response = await octokit.repos.createOrUpdateFileContents({
-      owner: owner,
-      repo: repo,
-      path: path,
-      message: commitMessage,
-      content: Buffer.from(fileContent).toString('base64'),
-      branch: branch,
-    });
+    try {
+      const response = await octokit.repos.createOrUpdateFileContents({
+        owner: owner,
+        repo: repo,
+        path: path,
+        message: commitMessage,
+        content: Buffer.from(fileContent).toString('base64'),
+        branch: branch,
+      });
+
+      console.log('[share-to-github] File created successfully:', {
+        path: response.data.content.path,
+        sha: response.data.content.sha,
+      });
+    } catch (apiError) {
+      console.error('[share-to-github] GitHub API call failed:', {
+        message: apiError.message,
+        status: apiError.status,
+        response: apiError.response ? {
+          status: apiError.response.status,
+          statusText: apiError.response.statusText,
+          data: apiError.response.data,
+        } : null,
+        stack: apiError.stack,
+      });
+      throw apiError; // Re-throw to be caught by outer catch
+    }
 
     // Generate GitHub URL
     const githubUrl = `https://github.com/${owner}/${repo}/blob/${branch}/${path}`;
@@ -135,9 +183,15 @@ module.exports = async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('GitHub API error:', {
+    console.error('[share-to-github] Error:', {
       message: error.message,
       status: error.status,
+      name: error.name,
+      response: error.response ? {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        data: error.response.data,
+      } : null,
       stack: error.stack,
     });
 
