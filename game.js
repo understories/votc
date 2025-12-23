@@ -472,6 +472,78 @@ ${prefix} ${msg.content}`;
         }).join('\n\n---\n\n');
     }
 
+    function showShareFullChatModal() {
+        if (!messageHistory || messageHistory.length === 0) {
+            displayError('No conversation history to share');
+            return;
+        }
+
+        // Get full conversation history
+        const fullHistory = messageHistory;
+
+        // Generate template for full chat
+        const template = generateFullChatTemplate(fullHistory);
+
+        // Create modal
+        const modal = document.createElement('div');
+        modal.id = 'share-modal';
+        modal.className = 'share-modal';
+        
+        modal.innerHTML = `
+            <div class="share-modal-content">
+                <div class="share-modal-header">
+                    <h2>Share Full Chat History to GitHub</h2>
+                    <button class="share-modal-close" id="share-modal-close">&times;</button>
+                </div>
+                <div class="share-modal-body">
+                    <div class="share-template-section">
+                        <label>Full Conversation Template (editable):</label>
+                        <textarea id="share-template-editor" class="share-template-editor">${escapeHtml(template)}</textarea>
+                    </div>
+                    <div class="share-history-section">
+                        <label>Conversation Summary:</label>
+                        <div class="share-history-viewer" id="share-history-viewer">
+                            <div class="terminal-line">Total messages: ${fullHistory.length}</div>
+                            <div class="terminal-line">User messages: ${fullHistory.filter(m => m.role === 'user').length}</div>
+                            <div class="terminal-line">AI messages: ${fullHistory.filter(m => m.role === 'assistant').length}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="share-modal-footer">
+                    <button class="share-button share-button-own" id="share-modal-cancel">Cancel</button>
+                    <button class="share-button share-button-default" id="share-modal-share-default">Share (default account)</button>
+                    <button class="share-button share-button-own" id="share-modal-share-own">Share (my account)</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Event listeners
+        document.getElementById('share-modal-close').addEventListener('click', () => hideShareModal());
+        document.getElementById('share-modal-cancel').addEventListener('click', () => hideShareModal());
+        document.getElementById('share-modal-share-default').addEventListener('click', () => {
+            const content = document.getElementById('share-template-editor').value;
+            shareToGitHub('default', content, fullHistory);
+        });
+        document.getElementById('share-modal-share-own').addEventListener('click', () => {
+            const content = document.getElementById('share-template-editor').value;
+            shareToGitHub('own', content, fullHistory);
+        });
+
+        // Close on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideShareModal();
+            }
+        });
+
+        // Focus textarea
+        setTimeout(() => {
+            document.getElementById('share-template-editor').focus();
+        }, 100);
+    }
+
     function showShareModal() {
         if (!selectedText || selectedMessages.length === 0) {
             displayError('No text selected');
