@@ -527,8 +527,8 @@ ${prefix} ${msg.content}`;
                 </div>
                 <div class="share-modal-footer">
                     <button class="share-button share-button-own" id="share-modal-cancel">Cancel</button>
-                    <button class="share-button share-button-default" id="share-modal-share-default">Share (github.com/vrnvrn via API)</button>
-                    <button class="share-button share-button-own" id="share-modal-share-own">Share (my account)</button>
+                    <button class="share-button share-button-default" id="share-modal-share-default">Share (directly with dev github vrnvrn)</button>
+                    <button class="share-button share-button-own" id="share-modal-share-own">Share (open github in new tab)</button>
                 </div>
             </div>
         `;
@@ -597,8 +597,8 @@ ${prefix} ${msg.content}`;
                 </div>
                 <div class="share-modal-footer">
                     <button class="share-button share-button-own" id="share-modal-cancel">Cancel</button>
-                    <button class="share-button share-button-default" id="share-modal-share-default">Share (github.com/vrnvrn via API)</button>
-                    <button class="share-button share-button-own" id="share-modal-share-own">Share (my account)</button>
+                    <button class="share-button share-button-default" id="share-modal-share-default">Share (directly with dev github vrnvrn)</button>
+                    <button class="share-button share-button-own" id="share-modal-share-own">Share (open github in new tab)</button>
                 </div>
             </div>
         `;
@@ -710,7 +710,7 @@ ${prefix} ${msg.content}`;
             displayError(`Failed to share: ${error.message}`);
             if (shareButton) {
                 shareButton.disabled = false;
-                shareButton.textContent = method === 'default' ? 'Share (github.com/vrnvrn via API)' : 'Share (my account)';
+                shareButton.textContent = method === 'default' ? 'Share (directly with dev github vrnvrn)' : 'Share (open github in new tab)';
             }
             if (cancelButton) {
                 cancelButton.disabled = false;
