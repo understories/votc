@@ -155,9 +155,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateStreamingMessage(element, content) {
+        if (!element) {
+            console.error('[game] updateStreamingMessage: element is null');
+            return;
+        }
         element.textContent = content;
         const output = document.getElementById('output');
-        output.scrollTop = output.scrollHeight;
+        if (output) {
+            output.scrollTop = output.scrollHeight;
+        }
+        console.log('[game] Updated streaming message, length:', content.length);
     }
 
     function finalizeStreamingMessage(element) {
