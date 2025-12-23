@@ -38,7 +38,7 @@ ${excerpt}
 }
 
 // Generate unique filename based on timestamp
-function generateFilename() {
+function generateFilename(isFullChat = false) {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -47,7 +47,8 @@ function generateFilename() {
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
   
-  return `idea-${year}-${month}-${day}-${hours}${minutes}${seconds}.md`;
+  const prefix = isFullChat ? 'conversation' : 'idea';
+  return `${prefix}-${year}-${month}-${day}-${hours}${minutes}${seconds}.md`;
 }
 
 module.exports = async function handler(req, res) {
@@ -101,7 +102,7 @@ module.exports = async function handler(req, res) {
     });
 
     // Generate filename and path
-    const filename = generateFilename();
+    const filename = generateFilename(isFullChatShare);
     const path = `${basePath}/${filename}`;
 
     // fileContent is already set above (either from content param or generated from excerpt)

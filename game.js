@@ -516,7 +516,7 @@ ${prefix} ${msg.content}`;
                 </div>
                 <div class="share-modal-footer">
                     <button class="share-button share-button-own" id="share-modal-cancel">Cancel</button>
-                    <button class="share-button share-button-default" id="share-modal-share-default">Share (default account)</button>
+                    <button class="share-button share-button-default" id="share-modal-share-default">Share (github.com/vrnvrn via API)</button>
                     <button class="share-button share-button-own" id="share-modal-share-own">Share (my account)</button>
                 </div>
             </div>
@@ -586,7 +586,7 @@ ${prefix} ${msg.content}`;
                 </div>
                 <div class="share-modal-footer">
                     <button class="share-button share-button-own" id="share-modal-cancel">Cancel</button>
-                    <button class="share-button share-button-default" id="share-modal-share-default">Share (default account)</button>
+                    <button class="share-button share-button-default" id="share-modal-share-default">Share (github.com/vrnvrn via API)</button>
                     <button class="share-button share-button-own" id="share-modal-share-own">Share (my account)</button>
                 </div>
             </div>
@@ -699,7 +699,7 @@ ${prefix} ${msg.content}`;
             displayError(`Failed to share: ${error.message}`);
             if (shareButton) {
                 shareButton.disabled = false;
-                shareButton.textContent = method === 'default' ? 'Share (default account)' : 'Share (my account)';
+                shareButton.textContent = method === 'default' ? 'Share (github.com/vrnvrn via API)' : 'Share (my account)';
             }
             if (cancelButton) {
                 cancelButton.disabled = false;
@@ -741,7 +741,7 @@ ${prefix} ${msg.content}`;
         displayMessage('system', 'Opened GitHub in new tab. Create an issue, then you can convert it to a PR or add the file directly.');
     }
 
-    function displaySuccess(url, filename) {
+    function displaySuccess(url, filename, accountInfo = '') {
         const output = document.getElementById('output');
         const line = document.createElement('div');
         line.className = 'terminal-line success-message';
@@ -753,7 +753,8 @@ ${prefix} ${msg.content}`;
         
         const text = document.createElement('span');
         text.className = 'success-text';
-        text.innerHTML = `Shared! <a href="${url}" target="_blank" rel="noopener" style="color: #00ff00; text-decoration: underline;">View on GitHub</a>`;
+        const accountNote = accountInfo ? ` (${accountInfo})` : '';
+        text.innerHTML = `Shared! <a href="${url}" target="_blank" rel="noopener" style="color: #00ff00; text-decoration: underline;">View on GitHub</a>${accountNote}`;
         text.style.color = '#00ff00';
         
         line.appendChild(prompt);
