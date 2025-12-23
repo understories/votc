@@ -597,14 +597,17 @@ body {
         line-height: 1.4;
     }
     
-    /* Chat output - scrollable area */
+    /* Chat output - scrollable area, input appears below */
     .terminal-output {
         margin-top: 1rem;
         font-size: 0.9rem;
         line-height: 1.6;
         padding-bottom: 0.5rem;
-        /* Ensure it doesn't overlap input */
-        padding-bottom: 5rem;
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 0;
+        /* Input will appear below in natural flow */
     }
     
     /* Input line - follows chat content, appears below messages */
@@ -658,19 +661,18 @@ body {
         height: 20px;
     }
     
-    /* Full chat share button - positioned above input */
+    /* Full chat share button - appears above input in flow */
     .full-chat-share-container {
-        position: fixed;
-        bottom: 4.5rem; /* Above input line */
-        left: 0;
-        right: 0;
+        position: relative;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
         padding: 0 0.75rem;
-        z-index: 99;
-        pointer-events: none;
+        z-index: 9;
+        display: flex;
+        justify-content: center;
     }
     
     .full-chat-share-container button {
-        pointer-events: auto;
         width: 100%;
         padding: 0.75rem;
         font-size: 0.85rem;
