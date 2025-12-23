@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const prompt = document.createElement('span');
         prompt.className = 'prompt';
         prompt.textContent = role === 'user' ? '>' : '$';
+        prompt.style.flexShrink = '0'; // Prevent prompt from shrinking
         
         const text = document.createElement('span');
         text.className = role === 'user' ? 'user-message' : 'ai-message';

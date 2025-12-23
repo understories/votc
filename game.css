@@ -170,10 +170,12 @@ body {
 
 .user-message {
     color: #00ff00;
+    flex: 1;
 }
 
 .ai-message {
     color: #fff;
+    flex: 1;
 }
 
 .loading-indicator {
@@ -197,9 +199,12 @@ body {
 .message-line {
     cursor: pointer;
     transition: background-color 0.2s ease;
-    padding: 0.25rem 0.5rem;
-    margin: 0.25rem 0;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
     border-radius: 2px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
 }
 
 .message-line:hover {
@@ -210,6 +215,15 @@ body {
     background-color: rgba(0, 255, 0, 0.2);
     border-left: 2px solid #00ff00;
     padding-left: 0.75rem;
+}
+
+/* User messages appear below AI messages with distinct styling */
+.message-line[data-role="user"] {
+    margin-top: 0.75rem;
+}
+
+.message-line[data-role="assistant"] {
+    margin-bottom: 0.25rem;
 }
 
 .share-buttons-container {
