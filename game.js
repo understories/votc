@@ -599,11 +599,11 @@ ${prefix} ${msg.content}`;
         document.getElementById('share-modal-cancel').addEventListener('click', () => hideShareModal());
         document.getElementById('share-modal-share-default').addEventListener('click', () => {
             const content = document.getElementById('share-template-editor').value;
-            shareToGitHub('default', content, fullHistory);
+            shareToGitHub('default', content, fullHistory, false); // Selected excerpt, not full chat
         });
         document.getElementById('share-modal-share-own').addEventListener('click', () => {
             const content = document.getElementById('share-template-editor').value;
-            shareToGitHub('own', content, fullHistory);
+            shareToGitHub('own', content, fullHistory, false); // Selected excerpt, not full chat
         });
 
         // Close on outside click
@@ -642,7 +642,7 @@ ${prefix} ${msg.content}`;
         }
     }
 
-    async function shareToGitHub(method, content, fullHistory) {
+    async function shareToGitHub(method, content, fullHistory, isFullChat = false) {
         if (!content) {
             displayError('No content to share');
             return;
@@ -674,6 +674,7 @@ ${prefix} ${msg.content}`;
                 body: JSON.stringify({
                     content: content, // Full template with chat history
                     excerpt: selectedText, // Keep for backwards compatibility
+                    isFullChat: isFullChat, // Flag to save to conversations directory
                     context: {
                         messages: selectedMessages,
                         fullHistory: fullHistory
