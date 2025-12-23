@@ -57,17 +57,25 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { excerpt, context } = req.body;
+    const { content, excerpt, context } = req.body;
 
-    // Validate input
-    if (!excerpt || typeof excerpt !== 'string') {
-      return res.status(400).json({ error: 'Excerpt is required' });
-    }
-
-    // Sanitize excerpt (limit length, prevent injection)
-    const sanitizedExcerpt = excerpt.slice(0, 5000).trim();
-    if (sanitizedExcerpt.length === 0) {
-      return res.status(400).json({ error: 'Excerpt cannot be empty' });
+    // Prefer full content if provided, otherwise use excerpt for backwards compatibility
+    let fileContent;
+    if (content && typeof content === 'string') {
+      // Use provided content (already includes template + chat history)
+      fileContent = content.slice(0, 50000).trim(); // Allow larger content for full chat history
+      if (fileContent.length === 0) {
+        return res.status(400).json({ error: 'Content cannot be empty' });
+      }
+    } else if (excerpt && typeof excerpt === 'string') {
+      // Fallback to generating template from excerpt (backwards compatibility)
+      const sanitizedExcerpt = excerpt.slice(0, 5000).trim();
+      if (sanitizedExcerpt.length === 0) {
+        return res.status(400).json({ error: 'Excerpt cannot be empty' });
+      }
+      fileContent = generateIdeaTemplate(sanitizedExcerpt, context || {});
+    } else {
+      return res.status(400).json({ error: 'Content or excerpt is required' });
     }
 
     // Get GitHub configuration
@@ -91,8 +99,7 @@ module.exports = async function handler(req, res) {
     const filename = generateFilename();
     const path = `${basePath}/${filename}`;
 
-    // Generate file content
-    const fileContent = generateIdeaTemplate(sanitizedExcerpt, context || {});
+    // fileContent is already set above (either from content param or generated from excerpt)
 
     // Create file in GitHub
     const response = await octokit.repos.createOrUpdateFileContents({

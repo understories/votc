@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Finalize streaming element
-            finalizeStreamingMessage(streamingElement);
+            finalizeStreamingMessage(streamingElement, 'assistant', aiMessage);
             
             // Add to history
             messageHistory.push({ role: 'assistant', content: aiMessage });
@@ -167,17 +167,19 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('[game] Updated streaming message, length:', content.length);
     }
 
-    function finalizeStreamingMessage(element) {
+    function finalizeStreamingMessage(element, role, content) {
         element.classList.remove('ai-message-streaming');
         // Add dataset attributes for message selection
         const line = element.closest('.terminal-line');
         if (line) {
             line.classList.add('message-line');
-            line.dataset.role = 'assistant';
-            line.dataset.content = element.textContent;
+            const finalRole = role || 'assistant';
+            const finalContent = content || element.textContent;
+            line.dataset.role = finalRole;
+            line.dataset.content = finalContent;
             // Add click handler for selection
             line.addEventListener('click', function() {
-                selectMessage(line, 'assistant', element.textContent);
+                selectMessage(line, finalRole, finalContent);
             });
         }
     }
@@ -281,22 +283,14 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonContainer.id = 'share-buttons-container';
         buttonContainer.className = 'share-buttons-container';
         
-        // Default account button (uses API)
-        const defaultButton = document.createElement('button');
-        defaultButton.id = 'share-default-btn';
-        defaultButton.className = 'share-button share-button-default';
-        defaultButton.textContent = 'share on github repo (default account)';
-        defaultButton.addEventListener('click', () => shareToGitHub('default'));
+        // Share button (opens modal)
+        const shareButton = document.createElement('button');
+        shareButton.id = 'share-btn';
+        shareButton.className = 'share-button share-button-default';
+        shareButton.textContent = 'share on github repo';
+        shareButton.addEventListener('click', () => showShareModal());
         
-        // Own account button (redirects to GitHub)
-        const ownButton = document.createElement('button');
-        ownButton.id = 'share-own-btn';
-        ownButton.className = 'share-button share-button-own';
-        ownButton.textContent = 'share on github repo (my account)';
-        ownButton.addEventListener('click', () => shareToGitHub('own'));
-        
-        buttonContainer.appendChild(defaultButton);
-        buttonContainer.appendChild(ownButton);
+        buttonContainer.appendChild(shareButton);
         output.appendChild(buttonContainer);
     }
 
@@ -307,38 +301,212 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    async function shareToGitHub(method) {
+    function generateIdeaTemplate(selectedText, selectedMessages, fullHistory) {
+        const timestamp = new Date().toISOString();
+        const date = new Date().toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZoneName: 'short'
+        });
+
+        // Extract key themes from conversation context
+        const assistantMessages = fullHistory.filter(m => m.role === 'assistant').map(m => m.content);
+        
+        // Generate a title suggestion from selected text (first line or first 60 chars)
+        const firstLine = selectedText.split('\n')[0];
+        const titleSuggestion = firstLine.length > 60 
+            ? firstLine.substring(0, 60).trim() + '...'
+            : firstLine.trim();
+
+        // Extract key themes from recent assistant messages
+        const keyThemes = assistantMessages.length > 0 
+            ? assistantMessages.slice(-3).map(msg => {
+                // Extract first question or key phrase (first sentence or first 100 chars)
+                const firstSentence = msg.split(/[.!?]/)[0] || msg.substring(0, 100);
+                return firstSentence.trim();
+            }).filter(t => t.length > 0)
+            : ['Emerging from dialogue'];
+
+        return `# Idea: ${titleSuggestion}
+
+**Source:** Valley of the Commons Game Master Dialogue  
+**Date:** ${date}  
+**Selected Excerpt:**
+
+${selectedText}
+
+---
+
+## Context
+
+This idea emerged from a Socratic dialogue about game design in the Valley of the Commons.
+
+**Key Themes:**
+${keyThemes.map(theme => `- ${theme}`).join('\n')}
+
+---
+
+## Next Steps
+
+- [ ] Refine this idea
+- [ ] Connect to other ideas
+- [ ] Propose as a tool/rule/quest/place
+- [ ] Document implementation approach
+
+---
+
+## Full Conversation History
+
+${formatChatHistory(fullHistory)}
+
+---
+
+*Generated from game master conversation*`;
+    }
+
+    function formatChatHistory(history) {
+        if (!history || history.length === 0) return 'No conversation history available.';
+        
+        return history.map((msg, index) => {
+            const prefix = msg.role === 'user' ? '>' : '$';
+            const roleLabel = msg.role === 'user' ? 'User' : 'Game Master';
+            return `### ${roleLabel} (${index + 1})
+
+${prefix} ${msg.content}`;
+        }).join('\n\n---\n\n');
+    }
+
+    function showShareModal() {
         if (!selectedText || selectedMessages.length === 0) {
             displayError('No text selected');
             return;
         }
 
+        // Get full conversation history
+        const fullHistory = messageHistory;
+
+        // Generate template
+        const template = generateIdeaTemplate(selectedText, selectedMessages, fullHistory);
+
+        // Create modal
+        const modal = document.createElement('div');
+        modal.id = 'share-modal';
+        modal.className = 'share-modal';
+        
+        modal.innerHTML = `
+            <div class="share-modal-content">
+                <div class="share-modal-header">
+                    <h2>Share Idea to GitHub</h2>
+                    <button class="share-modal-close" id="share-modal-close">&times;</button>
+                </div>
+                <div class="share-modal-body">
+                    <div class="share-template-section">
+                        <label>Idea Template (editable):</label>
+                        <textarea id="share-template-editor" class="share-template-editor">${escapeHtml(template)}</textarea>
+                    </div>
+                    <div class="share-history-section">
+                        <label>Full Conversation History:</label>
+                        <div class="share-history-viewer" id="share-history-viewer">
+                            ${formatChatHistoryForDisplay(fullHistory)}
+                        </div>
+                    </div>
+                </div>
+                <div class="share-modal-footer">
+                    <button class="share-button share-button-own" id="share-modal-cancel">Cancel</button>
+                    <button class="share-button share-button-default" id="share-modal-share-default">Share (default account)</button>
+                    <button class="share-button share-button-own" id="share-modal-share-own">Share (my account)</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Event listeners
+        document.getElementById('share-modal-close').addEventListener('click', () => hideShareModal());
+        document.getElementById('share-modal-cancel').addEventListener('click', () => hideShareModal());
+        document.getElementById('share-modal-share-default').addEventListener('click', () => {
+            const content = document.getElementById('share-template-editor').value;
+            shareToGitHub('default', content, fullHistory);
+        });
+        document.getElementById('share-modal-share-own').addEventListener('click', () => {
+            const content = document.getElementById('share-template-editor').value;
+            shareToGitHub('own', content, fullHistory);
+        });
+
+        // Close on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideShareModal();
+            }
+        });
+
+        // Focus textarea
+        setTimeout(() => {
+            document.getElementById('share-template-editor').focus();
+        }, 100);
+    }
+
+    function formatChatHistoryForDisplay(history) {
+        if (!history || history.length === 0) return '<div class="terminal-line">No conversation history available.</div>';
+        
+        return history.map((msg) => {
+            const prefix = msg.role === 'user' ? '>' : '$';
+            const roleClass = msg.role === 'user' ? 'user-message' : 'assistant-message';
+            return `<div class="terminal-line ${roleClass}">${prefix} ${escapeHtml(msg.content)}</div>`;
+        }).join('');
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function hideShareModal() {
+        const modal = document.getElementById('share-modal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+
+    async function shareToGitHub(method, content, fullHistory) {
+        if (!content) {
+            displayError('No content to share');
+            return;
+        }
+
+        const shareButton = document.getElementById(`share-modal-share-${method === 'default' ? 'default' : 'own'}`);
+        const cancelButton = document.getElementById('share-modal-cancel');
+        
+        if (shareButton) {
+            shareButton.disabled = true;
+            shareButton.textContent = 'Sharing...';
+        }
+        if (cancelButton) {
+            cancelButton.disabled = true;
+        }
+
         if (method === 'own') {
             // Redirect to GitHub to create issue or file with user's account
-            shareWithOwnAccount();
+            shareWithOwnAccount(content);
+            hideShareModal();
             return;
         }
 
         // Default: Use API with default account
-        const defaultButton = document.getElementById('share-default-btn');
-        const ownButton = document.getElementById('share-own-btn');
-        
-        if (defaultButton) {
-            defaultButton.disabled = true;
-            defaultButton.textContent = 'Sharing...';
-        }
-        if (ownButton) {
-            ownButton.disabled = true;
-        }
-
         try {
             const response = await fetch('/api/share-to-github', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    excerpt: selectedText,
+                    content: content, // Full template with chat history
+                    excerpt: selectedText, // Keep for backwards compatibility
                     context: {
                         messages: selectedMessages,
+                        fullHistory: fullHistory
                     }
                 })
             });
@@ -352,59 +520,28 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success message
             displaySuccess(data.url, data.filename);
             
-            // Clear selection
+            // Clear selection and close modal
+            hideShareModal();
             clearSelection();
 
         } catch (error) {
             displayError(`Failed to share: ${error.message}`);
-            if (defaultButton) {
-                defaultButton.disabled = false;
-                defaultButton.textContent = 'share on github repo (default account)';
+            if (shareButton) {
+                shareButton.disabled = false;
+                shareButton.textContent = method === 'default' ? 'Share (default account)' : 'Share (my account)';
             }
-            if (ownButton) {
-                ownButton.disabled = false;
+            if (cancelButton) {
+                cancelButton.disabled = false;
             }
         }
     }
 
-    function shareWithOwnAccount() {
-        // Generate file content template
-        const timestamp = new Date().toISOString();
-        const date = new Date().toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZoneName: 'short'
-        });
-
+    function shareWithOwnAccount(content) {
         const filename = `idea-${new Date().toISOString().slice(0, 19).replace(/:/g, '-').replace('T', '-')}.md`;
-        const fileContent = `# Idea: [Auto-generated from conversation]
-
-**Source:** Valley of the Commons Game Master Dialogue  
-**Date:** ${date}  
-**Excerpt:**
-
-${selectedText}
-
----
-
-**Context:** This idea emerged from a Socratic dialogue about game design in the Valley of the Commons.
-
-**Next Steps:**
-- [ ] Refine this idea
-- [ ] Connect to other ideas
-- [ ] Propose as a tool/rule/quest
-
----
-
-*Generated from game master conversation*`;
-
-        // Encode content for URL (base64 or use GitHub's issue creation)
-        // Option 1: Create GitHub issue with the content
+        
+        // Encode content for URL
         const issueTitle = encodeURIComponent(`Idea: ${selectedText.slice(0, 50)}...`);
-        const issueBody = encodeURIComponent(`This idea was generated from a game master conversation.\n\n## Excerpt\n\n${selectedText}\n\n## File Content\n\nTo add this as a file in \`build_game/ideas/\`, use this content:\n\n\`\`\`markdown\n${fileContent}\n\`\`\`\n\n**Suggested filename:** \`${filename}\`\n\n---\n\n*You can copy the markdown above and create a new file in the repo, or convert this issue to a pull request.*`);
+        const issueBody = encodeURIComponent(`This idea was generated from a game master conversation.\n\n## File Content\n\nTo add this as a file in \`build_game/ideas/\`, use this content:\n\n\`\`\`markdown\n${content}\n\`\`\`\n\n**Suggested filename:** \`${filename}\`\n\n---\n\n*You can copy the markdown above and create a new file in the repo, or convert this issue to a pull request.*`);
         
         const owner = 'understories';
         const repo = 'votc';
@@ -415,11 +552,6 @@ ${selectedText}
         
         // Show message
         displayMessage('system', 'Opened GitHub in new tab. Create an issue, then you can convert it to a PR or add the file directly.');
-        
-        // Clear selection after a delay
-        setTimeout(() => {
-            clearSelection();
-        }, 2000);
     }
 
     function displaySuccess(url, filename) {
