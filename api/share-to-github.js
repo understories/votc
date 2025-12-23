@@ -144,33 +144,19 @@ module.exports = async function handler(req, res) {
       ? 'Add full conversation from game master dialogue'
       : 'Add idea from game master conversation';
     
-    try {
-      const response = await octokit.repos.createOrUpdateFileContents({
-        owner: owner,
-        repo: repo,
-        path: path,
-        message: commitMessage,
-        content: Buffer.from(fileContent).toString('base64'),
-        branch: branch,
-      });
+    const response = await octokit.repos.createOrUpdateFileContents({
+      owner: owner,
+      repo: repo,
+      path: path,
+      message: commitMessage,
+      content: Buffer.from(fileContent).toString('base64'),
+      branch: branch,
+    });
 
-      console.log('[share-to-github] File created successfully:', {
-        path: response.data.content.path,
-        sha: response.data.content.sha,
-      });
-    } catch (apiError) {
-      console.error('[share-to-github] GitHub API call failed:', {
-        message: apiError.message,
-        status: apiError.status,
-        response: apiError.response ? {
-          status: apiError.response.status,
-          statusText: apiError.response.statusText,
-          data: apiError.response.data,
-        } : null,
-        stack: apiError.stack,
-      });
-      throw apiError; // Re-throw to be caught by outer catch
-    }
+    console.log('[share-to-github] File created successfully:', {
+      path: response.data.content.path,
+      sha: response.data.content.sha,
+    });
 
     // Generate GitHub URL
     const githubUrl = `https://github.com/${owner}/${repo}/blob/${branch}/${path}`;
