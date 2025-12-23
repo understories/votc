@@ -742,46 +742,70 @@ ${prefix} ${msg.content}`;
         const createFileUrl = `https://github.com/${owner}/${repo}/new/${branch}?filename=${encodeURIComponent(filePath)}`;
         
         // Copy content to clipboard
+        let clipboardSuccess = false;
         try {
             await navigator.clipboard.writeText(content);
-            
-            // Open GitHub in new tab
-            window.open(createFileUrl, '_blank', 'noopener,noreferrer');
-            
-            // Show helpful message
-            const fileType = isFullChat ? 'conversation' : 'idea';
-            displayMessage('system', `Opened GitHub file creation page. Content copied to clipboard! Paste it into the editor, commit, and GitHub will guide you to create a PR.`);
+            clipboardSuccess = true;
         } catch (clipboardError) {
-            // Fallback if clipboard API fails (e.g., not secure context)
             console.error('Clipboard API failed:', clipboardError);
-            
-            // Still open GitHub, but show content in a way user can access it
-            // Create a data URL or use a different approach
-            window.open(createFileUrl, '_blank', 'noopener,noreferrer');
-            
-            // Show content in a modal or alert that user can copy from
-            const fileType = isFullChat ? 'conversation' : 'idea';
-            displayMessage('system', `Opened GitHub file creation page. Please copy the content below:`);
-            
-            // Display content in a copyable format
-            const output = document.getElementById('output');
-            const contentBox = document.createElement('div');
-            contentBox.className = 'terminal-line';
-            contentBox.style.marginTop = '1rem';
-            contentBox.style.padding = '1rem';
-            contentBox.style.backgroundColor = '#111';
-            contentBox.style.border = '1px solid #333';
-            contentBox.style.maxHeight = '300px';
-            contentBox.style.overflowY = 'auto';
-            contentBox.style.whiteSpace = 'pre-wrap';
-            contentBox.style.fontSize = '0.85rem';
-            contentBox.style.color = '#00ff00';
-            contentBox.textContent = content;
-            contentBox.style.cursor = 'text';
-            contentBox.setAttribute('contenteditable', 'true');
-            output.appendChild(contentBox);
-            output.scrollTop = output.scrollHeight;
         }
+        
+        // Open GitHub in new tab
+        window.open(createFileUrl, '_blank', 'noopener,noreferrer');
+        
+        // Always show content in a copyable box for easy access
+        const output = document.getElementById('output');
+        const fileType = isFullChat ? 'conversation' : 'idea';
+        
+        // Show message
+        if (clipboardSuccess) {
+            displayMessage('system', `Opened GitHub file creation page. Content copied to clipboard! Paste (Cmd/Ctrl+V) into the editor. If clipboard didn't work, copy from the box below:`);
+        } else {
+            displayMessage('system', `Opened GitHub file creation page. Copy the content from the box below and paste it into GitHub's editor:`);
+        }
+        
+        // Display content in a copyable format
+        const contentBox = document.createElement('div');
+        contentBox.className = 'terminal-line';
+        contentBox.style.marginTop = '1rem';
+        contentBox.style.padding = '1rem';
+        contentBox.style.backgroundColor = '#111';
+        contentBox.style.border = '2px solid #00ff00';
+        contentBox.style.borderRadius = '4px';
+        contentBox.style.maxHeight = '400px';
+        contentBox.style.overflowY = 'auto';
+        contentBox.style.whiteSpace = 'pre-wrap';
+        contentBox.style.fontSize = '0.85rem';
+        contentBox.style.color = '#00ff00';
+        contentBox.style.fontFamily = 'Courier New, Monaco, Menlo, monospace';
+        contentBox.style.lineHeight = '1.6';
+        contentBox.textContent = content;
+        contentBox.style.cursor = 'text';
+        contentBox.setAttribute('contenteditable', 'true');
+        contentBox.setAttribute('spellcheck', 'false');
+        
+        // Add a "Select All" button
+        const selectAllBtn = document.createElement('button');
+        selectAllBtn.textContent = 'Select All';
+        selectAllBtn.className = 'share-button share-button-default';
+        selectAllBtn.style.marginTop = '0.5rem';
+        selectAllBtn.style.fontSize = '0.8rem';
+        selectAllBtn.style.padding = '0.4rem 0.8rem';
+        selectAllBtn.addEventListener('click', () => {
+            const range = document.createRange();
+            range.selectNodeContents(contentBox);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        });
+        
+        const container = document.createElement('div');
+        container.style.marginTop = '0.5rem';
+        container.appendChild(contentBox);
+        container.appendChild(selectAllBtn);
+        
+        output.appendChild(container);
+        output.scrollTop = output.scrollHeight;
     }
 
     function displaySuccess(url, filename, accountInfo = '') {
