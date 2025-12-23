@@ -73,6 +73,18 @@ module.exports = async function handler(req, res) {
   try {
     const { messages } = req.body;
     console.log('[game-chat] Messages received:', messages?.length || 0);
+    if (messages && messages.length > 0) {
+      console.log('[game-chat] First message:', {
+        role: messages[0]?.role,
+        content: messages[0]?.content?.substring(0, 100),
+      });
+      if (messages.length > 1) {
+        console.log('[game-chat] Last message:', {
+          role: messages[messages.length - 1]?.role,
+          content: messages[messages.length - 1]?.content?.substring(0, 100),
+        });
+      }
+    }
 
     // Validate input
     if (!messages || !Array.isArray(messages)) {
@@ -91,6 +103,14 @@ module.exports = async function handler(req, res) {
         };
       })
       .filter(msg => msg.content.length > 0); // Drop empty messages
+    
+    console.log('[game-chat] Sanitized messages:', sanitizedMessages.length);
+    if (sanitizedMessages.length > 0) {
+      console.log('[game-chat] Sanitized first message:', {
+        role: sanitizedMessages[0]?.role,
+        content: sanitizedMessages[0]?.content?.substring(0, 100),
+      });
+    }
 
     // Count user turns server-side (prevent gaming)
     const userTurns = sanitizedMessages.filter(m => m.role === 'user').length;
