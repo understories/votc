@@ -109,6 +109,38 @@ body {
     flex: 1;
     padding: 0;
     margin-left: 0.5rem;
+    min-width: 0; /* Allow flex shrinking */
+}
+
+.submit-button {
+    background: #00ff00;
+    color: #000;
+    border: 1px solid #00ff00;
+    padding: 0.5rem 1rem;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.submit-button:hover {
+    background: #00cc00;
+    border-color: #00cc00;
+}
+
+.submit-button:active {
+    background: #009900;
+    border-color: #009900;
+}
+
+.submit-button:disabled {
+    background: #333;
+    color: #666;
+    border-color: #333;
+    cursor: not-allowed;
 }
 
 #terminal-input::placeholder {

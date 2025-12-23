@@ -244,17 +244,28 @@ document.addEventListener('DOMContentLoaded', function() {
         output.scrollTop = output.scrollHeight;
     }
 
-    // Handle Enter key
+    // Handle Enter key and submit button
+    function handleSubmit() {
+        const userInput = input.value.trim();
+        if (userInput) {
+            sendMessage(userInput);
+            input.value = '';
+            input.focus();
+        }
+    }
+    
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            const userInput = input.value.trim();
-            if (userInput) {
-                sendMessage(userInput);
-                input.value = '';
-            }
+            handleSubmit();
         }
     });
+    
+    // Submit button for mobile
+    const submitButton = document.getElementById('submit-button');
+    if (submitButton) {
+        submitButton.addEventListener('click', handleSubmit);
+    }
     
     // Keep focus on input
     input.addEventListener('blur', function() {

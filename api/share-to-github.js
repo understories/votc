@@ -144,12 +144,30 @@ module.exports = async function handler(req, res) {
       ? 'Add full conversation from game master dialogue'
       : 'Add idea from game master conversation';
     
+    // Ensure content is properly encoded as base64
+    // GitHub API requires base64 encoding and the string must be valid
+    let base64Content;
+    try {
+      base64Content = Buffer.from(fileContent, 'utf8').toString('base64');
+      // Validate base64 encoding
+      if (!base64Content || base64Content.length === 0) {
+        throw new Error('Base64 encoding resulted in empty string');
+      }
+    } catch (encodeError) {
+      console.error('[share-to-github] Base64 encoding error:', encodeError);
+      return res.status(500).json({ 
+        error: 'Failed to encode content. Please try again.' 
+      });
+    }
+
+    console.log('[share-to-github] Base64 content length:', base64Content.length);
+
     const response = await octokit.repos.createOrUpdateFileContents({
       owner: owner,
       repo: repo,
       path: path,
       message: commitMessage,
-      content: Buffer.from(fileContent).toString('base64'),
+      content: base64Content,
       branch: branch,
     });
 
