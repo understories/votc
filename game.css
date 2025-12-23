@@ -302,12 +302,19 @@ body {
     margin-top: 1rem;
     margin-bottom: 1rem;
     display: flex;
-    position: sticky;
+    justify-content: center;
+    position: absolute;
     bottom: 4rem; /* Above input line */
-    background: #000;
+    left: 0;
+    right: 0;
+    background: transparent;
     padding: 0.5rem 0;
     z-index: 9;
-    justify-content: center;
+    pointer-events: none; /* Allow clicks to pass through to scrollable area */
+}
+
+.full-chat-share-container button {
+    pointer-events: auto; /* Re-enable clicks for the button */
 }
 
 .share-button {
