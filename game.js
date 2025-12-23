@@ -139,14 +139,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const output = document.getElementById('output');
         const line = document.createElement('div');
         line.className = 'terminal-line';
+        line.style.display = 'flex';
+        line.style.alignItems = 'flex-start';
+        line.style.gap = '0.5rem';
         
         const prompt = document.createElement('span');
         prompt.className = 'prompt';
         prompt.textContent = '$';
+        prompt.style.flexShrink = '0';
         
         const text = document.createElement('span');
         text.className = 'ai-message ai-message-streaming';
         text.textContent = '';
+        text.style.flex = '1';
         
         line.appendChild(prompt);
         line.appendChild(text);
