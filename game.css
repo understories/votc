@@ -97,6 +97,10 @@ body {
     margin-top: 1.5rem;
     z-index: 10;
     border-top: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
 }
 
 #terminal-input {
