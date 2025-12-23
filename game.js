@@ -52,9 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Check if response body exists
             if (!response.body) {
+                console.error('[game] No response body received');
                 throw new Error('No response body received');
             }
 
+            console.log('[game] Response received, starting to read stream');
+            
             // Text stream (simple: just append chunks)
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
@@ -62,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Create streaming message element
             const streamingElement = createStreamingMessageElement();
+            console.log('[game] Streaming element created');
             
             try {
                 while (true) {
@@ -73,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Decode chunk and append directly (text stream, no parsing needed)
                     const chunk = decoder.decode(value, { stream: true });
+                    console.log('[game] Chunk received:', chunk.substring(0, 50), 'length:', chunk.length);
                     if (chunk) {
                         aiMessage += chunk;
                         // Update UI (typewriter effect)
