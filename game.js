@@ -529,11 +529,11 @@ ${prefix} ${msg.content}`;
         document.getElementById('share-modal-cancel').addEventListener('click', () => hideShareModal());
         document.getElementById('share-modal-share-default').addEventListener('click', () => {
             const content = document.getElementById('share-template-editor').value;
-            shareToGitHub('default', content, fullHistory);
+            shareToGitHub('default', content, fullHistory, true); // Full chat, save to conversations directory
         });
         document.getElementById('share-modal-share-own').addEventListener('click', () => {
             const content = document.getElementById('share-template-editor').value;
-            shareToGitHub('own', content, fullHistory);
+            shareToGitHub('own', content, fullHistory, true); // Full chat, save to conversations directory
         });
 
         // Close on outside click
