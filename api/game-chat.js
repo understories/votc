@@ -32,6 +32,7 @@ function loadInternalThoughts() {
 
 const INTERNAL_THOUGHTS = loadInternalThoughts();
 
+// Base system prompt for ongoing Socratic dialogue
 const SYSTEM_PROMPT = `You are a Socratic game master moderator at the Valley of the Commons, facilitating dialogue about game design through thoughtful questions.
 
 YOUR ROLE (Socratic Method):
@@ -56,7 +57,26 @@ DESIGN PRINCIPLES (reference subtly in questions, never lecture):
 
 ${INTERNAL_THOUGHTS ? `\nINTERNAL DESIGN NOTES (use to inform questions, help participants discover these concepts):\n${INTERNAL_THOUGHTS}\n` : ''}
 
-CRITICAL: Your role is to probe with questions, not to lecture or provide answers. Use the internal thoughts to inform your questions, but help participants discover these concepts themselves through dialogue. Keep responses concise and terminal-friendly.`;
+CRITICAL: Your role is to probe with questions, not to lecture or provide answers. Use the internal thoughts to inform your questions, but help participants discover these concepts themselves through dialogue. Keep responses concise and terminal-friendly. Ask only one question at a time.`;
+
+// Context-setting prompt for first response
+const FIRST_RESPONSE_PROMPT = `You are a game master moderator welcoming someone to the Valley of the Commons.
+
+This is the FIRST response after the user has agreed to help create a game that shapes reality.
+
+YOUR TASK:
+- Provide a brief, evocative context-setting message (3-4 sentences) that introduces the Valley
+- Use the internal design notes to paint a picture of what this game-village is becoming
+- Set the stage for generative discussion about game design
+- End with ONE open-ended question that invites the participant to explore and contribute
+- Do NOT respond directly to "yes" or "sure" - instead, set context and invite exploration
+
+CONTEXT: "Valley of the Commons" is a decade-long game becoming a real village in the Austrian Alps.
+Participants can: propose tools, add rules, name places, create quests, document paths, bind myth to reality.
+
+${INTERNAL_THOUGHTS ? `\nINTERNAL DESIGN NOTES (use to inform your context-setting and first question):\n${INTERNAL_THOUGHTS}\n` : ''}
+
+CRITICAL: This is a context-setting moment. Paint a vivid picture of the Valley using the internal thoughts, then invite the participant into the generative discussion with one thoughtful question. Keep it concise (4-5 sentences total).`;
 
 module.exports = async function handler(req, res) {
   console.log('[game-chat] Request received:', req.method, req.url);
@@ -120,6 +140,9 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // Detect if this is the first user response (context-setting phase)
+    const isFirstResponse = userTurns === 1 && sanitizedMessages.length === 1;
+
     // Get API key (support both GAME_INTELLIGENCE and AI_GATEWAY_API_KEY)
     // Vercel AI SDK automatically reads AI_GATEWAY_API_KEY from environment
     // If GAME_INTELLIGENCE is set, use it as the API key
@@ -160,12 +183,17 @@ module.exports = async function handler(req, res) {
     try {
       // Use string model name - SDK automatically routes through AI Gateway
       // when it sees the "provider/model" format and AI_GATEWAY_API_KEY is set
+      
+      // Choose prompt based on whether this is the first response
+      const activePrompt = isFirstResponse ? FIRST_RESPONSE_PROMPT : SYSTEM_PROMPT;
       console.log('[game-chat] Creating streamText with model:', modelName);
+      console.log('[game-chat] Using prompt type:', isFirstResponse ? 'FIRST_RESPONSE' : 'SOCRATIC');
+      
       const result = streamText({
         model: modelName, // String format routes through Gateway
-        system: SYSTEM_PROMPT, // System prompt (NOT in messages array)
+        system: activePrompt, // System prompt (NOT in messages array)
         messages: sanitizedMessages, // Only user/assistant messages
-        maxTokens: 150, // Enforce brevity
+        maxTokens: isFirstResponse ? 200 : 150, // Allow slightly more for context-setting
         temperature: 0.7,
       });
 
