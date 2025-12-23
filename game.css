@@ -56,13 +56,18 @@ body {
     height: 100vh;
     padding: var(--spacing-lg, 2rem);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    overflow-y: auto;
+    padding-top: 4rem; /* Space for top links */
+    padding-bottom: 8rem; /* Space for input line and LLM info */
 }
 
 .terminal-content {
     width: 100%;
     max-width: 800px;
+    display: flex;
+    flex-direction: column;
 }
 
 .terminal-line {
@@ -85,8 +90,13 @@ body {
 }
 
 #input-line {
-    position: relative;
+    position: sticky;
+    bottom: 0;
+    background: #000;
+    padding: 1rem 0;
     margin-top: 1.5rem;
+    z-index: 10;
+    border-top: 1px solid #333;
 }
 
 #terminal-input {
@@ -124,6 +134,8 @@ body {
     white-space: pre-wrap;
     opacity: 0;
     animation: fadeIn 0.5s ease-in forwards;
+    max-height: none; /* Allow natural growth, parent handles scrolling */
+    overflow: visible;
 }
 
 .terminal-output.show {
