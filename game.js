@@ -671,8 +671,8 @@ ${prefix} ${msg.content}`;
         }
 
         if (method === 'own') {
-            // Redirect to GitHub to create issue or file with user's account
-            shareWithOwnAccount(content);
+            // Redirect to GitHub to create file directly with user's account
+            shareWithOwnAccount(content, isFullChat);
             hideShareModal();
             return;
         }
@@ -718,38 +718,70 @@ ${prefix} ${msg.content}`;
         }
     }
 
-    function shareWithOwnAccount(content) {
-        const filename = `idea-${new Date().toISOString().slice(0, 19).replace(/:/g, '-').replace('T', '-')}.md`;
-        
-        // Extract title from content (first line after "# Idea: ")
-        let titleText = 'Idea from conversation';
-        if (content) {
-            const firstLine = content.split('\n')[0];
-            const titleMatch = firstLine.match(/^# Idea:\s*(.+)$/);
-            if (titleMatch && titleMatch[1]) {
-                titleText = titleMatch[1].trim();
-            } else if (selectedText) {
-                // Fallback to selectedText if available
-                titleText = selectedText.slice(0, 50);
-            }
-        } else if (selectedText) {
-            // Fallback to selectedText if content is not provided
-            titleText = selectedText.slice(0, 50);
-        }
-        
-        // Encode content for URL
-        const issueTitle = encodeURIComponent(`Idea: ${titleText.length > 50 ? titleText.substring(0, 50) + '...' : titleText}`);
-        const issueBody = encodeURIComponent(`This idea was generated from a game master conversation.\n\n## File Content\n\nTo add this as a file in \`build_game/ideas/\`, use this content:\n\n\`\`\`markdown\n${content}\n\`\`\`\n\n**Suggested filename:** \`${filename}\`\n\n---\n\n*You can copy the markdown above and create a new file in the repo, or convert this issue to a pull request.*`);
+    async function shareWithOwnAccount(content, isFullChat = false) {
+        // Determine directory and filename based on whether it's a full chat or excerpt
+        const basePath = isFullChat ? 'build_game/conversations' : 'build_game/ideas';
+        const prefix = isFullChat ? 'conversation' : 'idea';
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const filename = `${prefix}-${year}-${month}-${day}-${hours}${minutes}${seconds}.md`;
+        const filePath = `${basePath}/${filename}`;
         
         const owner = 'understories';
         const repo = 'votc';
-        const issueUrl = `https://github.com/${owner}/${repo}/issues/new?title=${issueTitle}&body=${issueBody}&labels=idea,game-design`;
+        const branch = 'main';
         
-        // Open in new tab
-        window.open(issueUrl, '_blank', 'noopener,noreferrer');
+        // Open GitHub's "Create new file" interface
+        // This will prompt user to fork if they don't have write access
+        // The filename is pre-filled, user just needs to paste content
+        const createFileUrl = `https://github.com/${owner}/${repo}/new/${branch}?filename=${encodeURIComponent(filePath)}`;
         
-        // Show message
-        displayMessage('system', 'Opened GitHub in new tab. Create an issue, then you can convert it to a PR or add the file directly.');
+        // Copy content to clipboard
+        try {
+            await navigator.clipboard.writeText(content);
+            
+            // Open GitHub in new tab
+            window.open(createFileUrl, '_blank', 'noopener,noreferrer');
+            
+            // Show helpful message
+            const fileType = isFullChat ? 'conversation' : 'idea';
+            displayMessage('system', `Opened GitHub file creation page. Content copied to clipboard! Paste it into the editor, commit, and GitHub will guide you to create a PR.`);
+        } catch (clipboardError) {
+            // Fallback if clipboard API fails (e.g., not secure context)
+            console.error('Clipboard API failed:', clipboardError);
+            
+            // Still open GitHub, but show content in a way user can access it
+            // Create a data URL or use a different approach
+            window.open(createFileUrl, '_blank', 'noopener,noreferrer');
+            
+            // Show content in a modal or alert that user can copy from
+            const fileType = isFullChat ? 'conversation' : 'idea';
+            displayMessage('system', `Opened GitHub file creation page. Please copy the content below:`);
+            
+            // Display content in a copyable format
+            const output = document.getElementById('output');
+            const contentBox = document.createElement('div');
+            contentBox.className = 'terminal-line';
+            contentBox.style.marginTop = '1rem';
+            contentBox.style.padding = '1rem';
+            contentBox.style.backgroundColor = '#111';
+            contentBox.style.border = '1px solid #333';
+            contentBox.style.maxHeight = '300px';
+            contentBox.style.overflowY = 'auto';
+            contentBox.style.whiteSpace = 'pre-wrap';
+            contentBox.style.fontSize = '0.85rem';
+            contentBox.style.color = '#00ff00';
+            contentBox.textContent = content;
+            contentBox.style.cursor = 'text';
+            contentBox.setAttribute('contenteditable', 'true');
+            output.appendChild(contentBox);
+            output.scrollTop = output.scrollHeight;
+        }
     }
 
     function displaySuccess(url, filename, accountInfo = '') {
