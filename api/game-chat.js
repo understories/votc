@@ -171,11 +171,17 @@ module.exports = async function handler(req, res) {
 
       console.log('[game-chat] StreamText result created');
       
+      // Handle potential stream errors before returning
+      result.textStream.catch((error) => {
+        console.error('[game-chat] Stream error caught:', error.message);
+      });
+      
       // Return text stream (simplest for terminal typewriter effect)
       // toTextStreamResponse() creates a Response object that streams the text
-      // Don't consume the stream here - let it stream to the client
       const streamResponse = result.toTextStreamResponse();
       console.log('[game-chat] Stream response created, sending to client');
+      
+      // Ensure response is sent
       return streamResponse;
     } catch (streamError) {
       console.error('[game-chat] Error in streamText call:', {
