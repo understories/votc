@@ -148,7 +148,13 @@ module.exports = async function handler(req, res) {
       });
 
       console.log('[game-chat] StreamText result created, returning stream response');
+      
       // Return text stream (simplest for terminal typewriter effect)
+      // Set proper headers for streaming
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+      
       return result.toTextStreamResponse();
     } catch (streamError) {
       console.error('[game-chat] Error in streamText call:', {

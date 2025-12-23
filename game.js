@@ -40,8 +40,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!response.ok) {
-                const error = await response.json().catch(() => ({ error: `API error: ${response.status}` }));
+                const errorText = await response.text().catch(() => '');
+                let error;
+                try {
+                    error = JSON.parse(errorText);
+                } catch {
+                    error = { error: errorText || `API error: ${response.status}` };
+                }
                 throw new Error(error.error || `API error: ${response.status}`);
+            }
+
+            // Check if response body exists
+            if (!response.body) {
+                throw new Error('No response body received');
             }
 
             // Text stream (simple: just append chunks)
@@ -52,16 +63,25 @@ document.addEventListener('DOMContentLoaded', function() {
             // Create streaming message element
             const streamingElement = createStreamingMessageElement();
             
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                
-                // Decode chunk and append directly (text stream, no parsing needed)
-                const chunk = decoder.decode(value, { stream: true });
-                aiMessage += chunk;
-                
-                // Update UI (typewriter effect)
-                updateStreamingMessage(streamingElement, aiMessage);
+            try {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        console.log('[game] Stream complete, received', aiMessage.length, 'characters');
+                        break;
+                    }
+                    
+                    // Decode chunk and append directly (text stream, no parsing needed)
+                    const chunk = decoder.decode(value, { stream: true });
+                    if (chunk) {
+                        aiMessage += chunk;
+                        // Update UI (typewriter effect)
+                        updateStreamingMessage(streamingElement, aiMessage);
+                    }
+                }
+            } catch (streamError) {
+                console.error('[game] Stream reading error:', streamError);
+                throw streamError;
             }
             
             // Finalize streaming element
