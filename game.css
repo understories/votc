@@ -673,9 +673,9 @@ body {
         min-height: 44px;
     }
     
-    /* LLM info - hide on mobile or make very small */
+    /* LLM info - hide on mobile to save space */
     .llm-info {
-        display: none; /* Hide on mobile to save space */
+        display: none !important; /* Hide on mobile to save space */
     }
     
     /* Share buttons - touch-friendly */
