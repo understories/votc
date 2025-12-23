@@ -183,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const finalContent = content || element.textContent;
             line.dataset.role = finalRole;
             line.dataset.content = finalContent;
+            // Ensure proper layout (flexbox already set in createStreamingMessageElement)
             // Add click handler for selection
             line.addEventListener('click', function() {
                 selectMessage(line, finalRole, finalContent);
