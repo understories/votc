@@ -233,6 +233,13 @@ body {
     flex-wrap: wrap;
 }
 
+.full-chat-share-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
 .share-button {
     padding: 0.5rem 1rem;
     background: transparent;

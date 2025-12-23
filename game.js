@@ -308,6 +308,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function showFullChatShareButton() {
+        // Remove existing button if any
+        hideFullChatShareButton();
+        
+        const container = document.getElementById('full-chat-share-container');
+        if (!container) return;
+        
+        const button = document.createElement('button');
+        button.id = 'full-chat-share-btn';
+        button.className = 'share-button share-button-own';
+        button.textContent = 'add whole chat history to github repo';
+        button.addEventListener('click', () => showShareFullChatModal());
+        
+        container.appendChild(button);
+    }
+
+    function hideFullChatShareButton() {
+        const container = document.getElementById('full-chat-share-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+    }
+
     function generateIdeaTemplate(selectedText, selectedMessages, fullHistory) {
         const timestamp = new Date().toISOString();
         const date = new Date().toLocaleString('en-US', {
@@ -372,6 +395,69 @@ ${formatChatHistory(fullHistory)}
 ---
 
 *Generated from game master conversation*`;
+    }
+
+    function generateFullChatTemplate(fullHistory) {
+        const timestamp = new Date().toISOString();
+        const date = new Date().toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZoneName: 'short'
+        });
+
+        // Generate title from first user message or first AI response
+        const firstUserMessage = fullHistory.find(m => m.role === 'user');
+        const firstAIMessage = fullHistory.find(m => m.role === 'assistant');
+        const titleSource = firstUserMessage?.content || firstAIMessage?.content || 'Conversation';
+        const titleSuggestion = titleSource.length > 60 
+            ? titleSource.substring(0, 60).trim() + '...'
+            : titleSource.trim();
+
+        // Extract key themes from assistant messages
+        const assistantMessages = fullHistory.filter(m => m.role === 'assistant').map(m => m.content);
+        const keyThemes = assistantMessages.length > 0 
+            ? assistantMessages.slice(0, 5).map(msg => {
+                const firstSentence = msg.split(/[.!?]/)[0] || msg.substring(0, 100);
+                return firstSentence.trim();
+            }).filter(t => t.length > 0)
+            : ['Emerging from dialogue'];
+
+        return `# Conversation: ${titleSuggestion}
+
+**Source:** Valley of the Commons Game Master Dialogue  
+**Date:** ${date}  
+**Message Count:** ${fullHistory.length} exchanges
+
+---
+
+## Context
+
+This is a complete Socratic dialogue about game design in the Valley of the Commons.
+
+**Key Themes:**
+${keyThemes.map(theme => `- ${theme}`).join('\n')}
+
+---
+
+## Full Conversation History
+
+${formatChatHistory(fullHistory)}
+
+---
+
+## Next Steps
+
+- [ ] Extract specific ideas from this conversation
+- [ ] Connect themes to other conversations
+- [ ] Propose tools/rules/quests/places based on insights
+- [ ] Document implementation approaches
+
+---
+
+*Generated from complete game master conversation*`;
     }
 
     function formatChatHistory(history) {
