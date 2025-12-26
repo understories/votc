@@ -201,6 +201,18 @@ body {
     transform: translateX(2px);
 }
 
+.nav-rabbit {
+    font-size: 18px;
+    text-decoration: none;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.nav-rabbit:hover {
+    transform: scale(1.2);
+    text-decoration: none;
+}
+
 /* Sticky CTA Button */
 .cta-sticky {
     position: fixed;
