@@ -192,31 +192,52 @@
             
             <h3>What We Track</h3>
             <ul>
-                <li><strong>Conversation messages:</strong> Your dialogue with the game master is processed server-side to generate responses</li>
                 <li><strong>Server logs:</strong> Basic request metadata (method, timestamp, message count) for debugging and monitoring</li>
-                <li><strong>Shared ideas:</strong> If you choose to share an idea to GitHub, it becomes part of the public repository</li>
+                <li><strong>Shared ideas:</strong> If you choose to share an idea or conversation to GitHub, it becomes part of the public repository</li>
             </ul>
+            
+            <h3>What We Do NOT Save</h3>
+            <ul>
+                <li><strong>We do NOT save conversations:</strong> Your dialogue with the game master is processed temporarily to generate responses, but we do not store conversations in any database or persistent storage</li>
+                <li><strong>We do NOT track conversations:</strong> Conversations exist only in your browser session and are not saved by us</li>
+            </ul>
+            
+            <h3>AI Provider Tracking</h3>
+            <p>
+                <span class="warning">Important:</span> While <strong>we do not save your conversations</strong>, the AI provider 
+                (Mistral via Vercel AI Gateway) may track conversations according to their own privacy policy. 
+                We have no control over their data collection practices. For details, see 
+                <a href="https://mistral.ai/legal/privacy-policy/" target="_blank" rel="noopener">Mistral's Privacy Policy</a> 
+                and <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's Privacy Policy</a>.
+            </p>
             
             <h3>What We Do NOT Track</h3>
             <ul>
                 <li><strong>No user accounts:</strong> No registration, no login, no personal profiles</li>
                 <li><strong>No cookies:</strong> No tracking cookies, no analytics cookies, no advertising trackers</li>
                 <li><strong>No IP logging:</strong> IP addresses are not stored or logged</li>
-                <li><strong>No persistent storage:</strong> Conversations are not saved to databases</li>
                 <li><strong>No third-party analytics:</strong> No Google Analytics, no Facebook Pixel, no tracking scripts</li>
                 <li><strong>No email collection:</strong> The game interface does not collect email addresses</li>
             </ul>
             
             <h3>Conversation Handling</h3>
             <p>
-                Conversations exist only in your browser session. Messages are sent to the server for AI processing 
-                but are <strong>not stored persistently</strong>. Each conversation is ephemeral and exists only 
-                during your active session.
+                <strong>We do not save conversations.</strong> Conversations exist only in your browser session. 
+                Messages are sent to the server for AI processing but are <strong>not stored persistently by us</strong>. 
+                Each conversation is ephemeral and exists only during your active session. When you close your browser, 
+                the conversation is gone from our systems.
+            </p>
+            
+            <h3>When Conversations Are Saved</h3>
+            <p>
+                Conversations are <strong>only saved</strong> when you explicitly choose to share them to GitHub using 
+                the "Share to GitHub" feature. This is an opt-in action that you control. Once shared, the conversation 
+                becomes part of the public repository at <code>build_game/conversations/</code>.
             </p>
             
             <h3>Server-Side Processing</h3>
             <p>
-                Messages are processed through Vercel serverless functions. Server logs may contain:
+                Messages are processed through Vercel serverless functions. Our server logs may contain:
             </p>
             <ul>
                 <li>Request metadata (timestamp, method)</li>
@@ -224,7 +245,8 @@
                 <li>First/last message previews (first 100 characters, for debugging only)</li>
             </ul>
             <p>
-                These logs are <strong>not publicly accessible</strong> and are used only for system monitoring and debugging.
+                These logs are <strong>not publicly accessible</strong> and are used only for system monitoring and debugging. 
+                They do not contain full conversation content and are automatically rotated by Vercel.
             </p>
         </div>
         
