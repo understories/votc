@@ -36,6 +36,16 @@ function initLoadingScreen() {
     const loadingScreen = document.getElementById('loading-screen');
     if (!loadingScreen) return;
 
+    const skipButton = document.getElementById('skip-loading');
+    if (skipButton) {
+        skipButton.addEventListener('click', function() {
+            loadingScreen.classList.add('hidden');
+            setTimeout(function() {
+                loadingScreen.remove();
+            }, 1200);
+        });
+    }
+
     // Wait for page to fully load
     window.addEventListener('load', function() {
         // Add delay to allow title animation to complete (6s zoom + 4s title = ~6s total)
