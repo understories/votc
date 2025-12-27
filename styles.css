@@ -360,7 +360,7 @@ body {
 .event-dates-banner {
     background: var(--color-accent);
     color: var(--color-bg);
-    padding: var(--spacing-lg) var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -394,16 +394,16 @@ body {
 }
 
 .event-title {
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 0.25rem;
     color: var(--color-bg);
 }
 
 .event-dates {
-    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
     font-weight: 400;
     letter-spacing: 0.05em;
     opacity: 0.95;
