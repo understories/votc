@@ -89,16 +89,19 @@ body {
 
 .terminal-line {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 1rem;
     font-size: 1.1rem;
     line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .prompt {
     color: #00ff00;
     margin-right: 0.5rem;
     font-weight: bold;
+    flex-shrink: 0; /* Prevent prompt from shrinking */
 }
 
 .question {
@@ -121,6 +124,7 @@ body {
     gap: 0.5rem;
     flex-wrap: nowrap;
     width: 100%;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow to separate from content */
 }
 
 #terminal-input {
@@ -193,9 +197,11 @@ body {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-bottom: 5rem; /* Space for input line */
+    padding-bottom: 6rem; /* Space for input line - increased to prevent overlap */
     -webkit-overflow-scrolling: touch;
     min-height: 0; /* Allow flex shrinking */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .terminal-output.show {
@@ -243,11 +249,17 @@ body {
 .user-message {
     color: #00ff00;
     flex: 1;
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .ai-message {
     color: #fff;
     flex: 1;
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .loading-indicator {
@@ -332,7 +344,7 @@ body {
     }
     
     .terminal-output {
-        padding-bottom: 5rem; /* Space for fixed input line */
+        padding-bottom: 6rem; /* Space for fixed input line - increased to prevent overlap */
     }
     
     .full-chat-share-container {
