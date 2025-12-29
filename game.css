@@ -39,6 +39,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Increase touch target size for mobile */
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
 }
 
 .home-link:hover,
@@ -334,6 +338,11 @@ body {
     .full-chat-share-container {
         position: absolute;
         bottom: 4rem;
+    }
+    
+    /* Ensure desktop input is at least 16px to prevent zoom on some tablets */
+    #terminal-input {
+        font-size: max(1.1rem, 16px);
     }
 }
 
@@ -682,6 +691,15 @@ body {
     .privacy-link svg {
         width: 20px;
         height: 20px;
+    }
+    
+    /* Ensure touch targets are large enough on mobile */
+    .home-link,
+    .github-link,
+    .privacy-link {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.5rem;
     }
     
     /* Full chat share button - appears above input in flow */
