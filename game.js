@@ -6,11 +6,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const output = document.getElementById('output');
     const cursor = document.querySelector('.cursor');
     
+    // Detect mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                     (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+    
     let messageHistory = [];
     let turnCount = 0;
     const MAX_TURNS = 12;
     let selectedText = null;
     let selectedMessages = [];
+    
+    // Auto-focus only on desktop (not mobile to avoid immediate keyboard)
+    if (!isMobile) {
+        input.focus();
+    }
 
     // Initial question is set in HTML
     // After first response, Socratic game master moderator takes over
@@ -250,7 +259,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (userInput) {
             sendMessage(userInput);
             input.value = '';
-            input.focus();
+            // Only auto-focus on desktop (not mobile)
+            if (!isMobile) {
+                input.focus();
+            }
         }
     }
     
@@ -267,12 +279,14 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.addEventListener('click', handleSubmit);
     }
     
-    // Keep focus on input
-    input.addEventListener('blur', function() {
-        if (turnCount < MAX_TURNS) {
-            input.focus();
-        }
-    });
+    // Keep focus on input (only on desktop, not mobile to avoid interference)
+    if (!isMobile) {
+        input.addEventListener('blur', function() {
+            if (turnCount < MAX_TURNS) {
+                input.focus();
+            }
+        });
+    }
 
     // Text selection functionality
     function selectMessage(line, role, content) {
@@ -504,12 +518,15 @@ ${prefix} ${msg.content}`;
         const modal = document.createElement('div');
         modal.id = 'share-modal';
         modal.className = 'share-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-labelledby', 'share-modal-title-full');
         
         modal.innerHTML = `
             <div class="share-modal-content">
                 <div class="share-modal-header">
-                    <h2>Share Full Chat History to GitHub</h2>
-                    <button class="share-modal-close" id="share-modal-close">&times;</button>
+                    <h2 id="share-modal-title-full">Share Full Chat History to GitHub</h2>
+                    <button class="share-modal-close" id="share-modal-close" aria-label="Close dialog">&times;</button>
                 </div>
                 <div class="share-modal-body">
                     <div class="share-template-section">
@@ -535,8 +552,16 @@ ${prefix} ${msg.content}`;
 
         document.body.appendChild(modal);
 
+        // Focus management for accessibility
+        const closeButton = document.getElementById('share-modal-close');
+        
+        // Focus the close button first (for keyboard navigation)
+        setTimeout(() => {
+            closeButton.focus();
+        }, 100);
+
         // Event listeners
-        document.getElementById('share-modal-close').addEventListener('click', () => hideShareModal());
+        closeButton.addEventListener('click', () => hideShareModal());
         document.getElementById('share-modal-cancel').addEventListener('click', () => hideShareModal());
         document.getElementById('share-modal-share-default').addEventListener('click', () => {
             const content = document.getElementById('share-template-editor').value;
@@ -553,11 +578,15 @@ ${prefix} ${msg.content}`;
                 hideShareModal();
             }
         });
-
-        // Focus textarea
-        setTimeout(() => {
-            document.getElementById('share-template-editor').focus();
-        }, 100);
+        
+        // Close on Escape key
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                hideShareModal();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
     }
 
     function showShareModal() {
@@ -576,12 +605,15 @@ ${prefix} ${msg.content}`;
         const modal = document.createElement('div');
         modal.id = 'share-modal';
         modal.className = 'share-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-labelledby', 'share-modal-title-idea');
         
         modal.innerHTML = `
             <div class="share-modal-content">
                 <div class="share-modal-header">
-                    <h2>Share Idea to GitHub</h2>
-                    <button class="share-modal-close" id="share-modal-close">&times;</button>
+                    <h2 id="share-modal-title-idea">Share Idea to GitHub</h2>
+                    <button class="share-modal-close" id="share-modal-close" aria-label="Close dialog">&times;</button>
                 </div>
                 <div class="share-modal-body">
                     <div class="share-template-section">
@@ -605,8 +637,17 @@ ${prefix} ${msg.content}`;
 
         document.body.appendChild(modal);
 
+        // Focus management for accessibility
+        const closeButton = document.getElementById('share-modal-close');
+        const textarea = document.getElementById('share-template-editor');
+        
+        // Focus the close button first (for keyboard navigation)
+        setTimeout(() => {
+            closeButton.focus();
+        }, 100);
+
         // Event listeners
-        document.getElementById('share-modal-close').addEventListener('click', () => hideShareModal());
+        closeButton.addEventListener('click', () => hideShareModal());
         document.getElementById('share-modal-cancel').addEventListener('click', () => hideShareModal());
         document.getElementById('share-modal-share-default').addEventListener('click', () => {
             const content = document.getElementById('share-template-editor').value;
@@ -623,11 +664,15 @@ ${prefix} ${msg.content}`;
                 hideShareModal();
             }
         });
-
-        // Focus textarea
-        setTimeout(() => {
-            document.getElementById('share-template-editor').focus();
-        }, 100);
+        
+        // Close on Escape key
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                hideShareModal();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
     }
 
     function formatChatHistoryForDisplay(history) {
@@ -649,7 +694,13 @@ ${prefix} ${msg.content}`;
     function hideShareModal() {
         const modal = document.getElementById('share-modal');
         if (modal) {
+            // Return focus to the element that opened the modal (if available)
+            const previouslyFocused = document.activeElement;
             modal.remove();
+            // Focus back to input if it was previously focused
+            if (input && document.activeElement === document.body) {
+                input.focus();
+            }
         }
     }
 
