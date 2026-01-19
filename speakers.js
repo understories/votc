@@ -68,9 +68,15 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleText.className = 'speaker-toggle-text';
             toggleText.textContent = 'click to read more';
 
+            // Create read more indicator for desktop
+            const readMoreDesktop = document.createElement('span');
+            readMoreDesktop.className = 'speaker-read-more-desktop';
+            readMoreDesktop.textContent = 'read more v';
+
             // Assemble card
             speakerCard.appendChild(img);
             speakerCard.appendChild(name);
+            speakerCard.appendChild(readMoreDesktop);
             speakerCard.appendChild(toggleText);
             speakerCard.appendChild(bio);
 

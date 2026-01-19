@@ -860,6 +860,16 @@ body {
     overflow-wrap: normal;
 }
 
+.speaker-read-more-desktop {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-top: var(--spacing-xs);
+    font-style: italic;
+    display: block;
+    width: auto;
+    text-align: center;
+}
+
 .speaker-toggle-text {
     font-size: 0.75rem;
     color: var(--color-text-light);
@@ -1164,6 +1174,10 @@ body {
 
     .speaker-name {
         font-size: 1rem;
+    }
+
+    .speaker-read-more-desktop {
+        display: none;
     }
 
     .speaker-toggle-text {
