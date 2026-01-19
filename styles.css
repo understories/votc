@@ -813,9 +813,8 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     min-height: auto;
-    align-self: start;
-    width: auto;
-    min-width: 180px;
+    width: fit-content;
+    max-width: 200px;
 }
 
 .speaker-card:hover {
