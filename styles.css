@@ -867,6 +867,8 @@ body {
     margin-top: var(--spacing-xs);
     font-style: italic;
     display: none;
+    width: auto;
+    text-align: center;
 }
 
 .speaker-bio {
