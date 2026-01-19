@@ -37,8 +37,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
+    // Sort by last name; single-name entries go last
+    const sortedSpeakers = [...speakers].sort((a, b) => {
+        const aParts = a.name.trim().split(/\s+/);
+        const bParts = b.name.trim().split(/\s+/);
+        const aHasLast = aParts.length > 1;
+        const bHasLast = bParts.length > 1;
+
+        if (aHasLast && bHasLast) {
+            const lastCompare = aParts[aParts.length - 1]
+                .localeCompare(bParts[bParts.length - 1], 'en', { sensitivity: 'base' });
+            if (lastCompare !== 0) return lastCompare;
+            return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+        }
+
+        if (aHasLast !== bHasLast) return aHasLast ? -1 : 1;
+
+        return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+    });
+
     // Load each speaker
-    speakers.forEach(speaker => {
+    sortedSpeakers.forEach(speaker => {
         loadSpeaker(speaker);
     });
 

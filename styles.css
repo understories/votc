@@ -849,8 +849,8 @@ body {
 .speaker-name {
     font-size: var(--speaker-name-size);
     font-weight: 600;
-    margin-bottom: var(--spacing-xs);
     margin-top: 0;
+    margin-bottom: 0;
     color: var(--color-accent);
     text-transform: none;
     letter-spacing: 0.02em;
@@ -870,7 +870,6 @@ body {
 .speaker-read-more-desktop {
     font-size: var(--speaker-read-more-size);
     color: var(--color-text-light);
-    margin-top: var(--spacing-xs);
     font-style: italic;
     display: block;
     width: auto;
@@ -1182,12 +1181,19 @@ body {
         height: 90px;
     }
 
+    .speaker-name {
+        line-height: 1.15;
+        min-height: 2.2em;
+        justify-content: flex-start;
+    }
+
     .speaker-read-more-desktop {
         display: none;
     }
 
     .speaker-toggle-text {
         display: block;
+        line-height: 1.1;
     }
 
     .speaker-bio {
