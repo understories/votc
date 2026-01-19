@@ -1211,6 +1211,10 @@ body {
         display: inline;
     }
 
+    .nav a[href="#explore"] {
+        display: none;
+    }
+
     .nav a {
         font-size: clamp(9px, 2vw, 12px);
         flex-shrink: 0;
