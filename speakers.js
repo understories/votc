@@ -6,11 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Define speakers based on folder structure
     const speakers = [
         {
-            name: 'Michel Bauwens',
-            folder: 'Michel Bauwens',
-            image: 'bauwens.jpeg'
-        },
-        {
             name: 'Adam Arvidsson',
             folder: 'Adam Arvidsson',
             image: 'Arvidsson.png'
@@ -21,9 +16,24 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'Fritsch.png'
         },
         {
+            name: 'Koss Knobelsdorf',
+            folder: 'Koss Knobelsdorf',
+            image: 'koss.png'
+        },
+        {
+            name: 'Michel Bauwens',
+            folder: 'Michel Bauwens',
+            image: 'bauwens.jpeg'
+        },
+        {
             name: 'Rashmi Abbigeri',
             folder: 'Rashmi Abbigeri',
             image: 'Abbigeri.png'
+        },
+        {
+            name: 'Veronica',
+            folder: 'Veronica',
+            image: 'veronica.png'
         }
     ];
 
