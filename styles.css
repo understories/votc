@@ -601,6 +601,8 @@ body {
     margin: 0;
     transform: none;
     contain: layout style;
+    transition: none !important;
+    animation: none !important;
 }
 
 .schedule-week:hover {
@@ -608,9 +610,7 @@ body {
 }
 
 @media (min-width: 769px) {
-    .schedule-week:hover .week-description-full {
-        display: block;
-    }
+    /* Hover behavior handled by visibility/opacity/max-height rules above */
 }
 
 .schedule-week h3 {
@@ -677,6 +677,8 @@ body {
     margin-top: 0;
     padding-top: 0;
     border-top: none;
+    transition: none !important;
+    animation: none !important;
 }
 
 .schedule-week:hover .week-description-full,
@@ -687,6 +689,8 @@ body {
     margin-top: var(--spacing-sm);
     padding-top: var(--spacing-sm);
     border-top: 1px solid #e5e5e5;
+    transition: none !important;
+    animation: none !important;
 }
 
 .schedule-week.expanded .read-more-link::after {
