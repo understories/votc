@@ -839,7 +839,7 @@ body {
     line-height: 1.6;
     color: var(--color-text);
     margin: 0;
-    margin-top: var(--spacing-sm);
+    margin-top: 0;
     opacity: 0;
     max-height: 0;
     overflow: hidden;
@@ -847,6 +847,7 @@ body {
     max-width: 100%;
     transition: opacity 0.3s ease, max-height 0.3s ease, margin-top 0.3s ease;
     visibility: hidden;
+    padding: 0;
 }
 
 .speaker-card:hover .speaker-bio,
@@ -856,6 +857,7 @@ body {
     overflow: visible;
     visibility: visible;
     margin-top: var(--spacing-sm);
+    padding: 0;
 }
 
 .community-partners-section {
