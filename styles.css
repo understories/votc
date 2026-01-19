@@ -1006,8 +1006,13 @@ body {
     }
 
     .speakers-container {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: center;
         gap: var(--spacing-md);
+    }
+
+    .speaker-card {
+        max-width: 100%;
     }
 
     .speaker-image {
