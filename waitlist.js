@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Disable form during submission
         submitButton.disabled = true;
-        submitButton.textContent = 'Joining...';
+        submitButton.textContent = 'Submitting...';
         messageDiv.textContent = '';
         messageDiv.className = 'waitlist-message';
 
@@ -99,7 +99,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!email || !email.includes('@')) {
             showMessage('Please enter a valid email address.', 'error');
             submitButton.disabled = false;
-            submitButton.textContent = 'Join Waitlist';
+            submitButton.textContent = 'Submit';
+            return;
+        }
+
+        // Name is now required
+        if (!name || name.trim() === '') {
+            showMessage('Please enter your name.', 'error');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit';
             return;
         }
 
@@ -115,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                showMessage('Thank you! You\'ve been added to the waitlist.', 'success');
+                showMessage('Thank you! Your information has been submitted.', 'success');
                 form.reset();
             } else {
                 showMessage(data.error || 'Something went wrong. Please try again.', 'error');
@@ -125,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showMessage('Network error. Please check your connection and try again.', 'error');
         } finally {
             submitButton.disabled = false;
-            submitButton.textContent = 'Join Waitlist';
+            submitButton.textContent = 'Submit';
         }
     });
 
