@@ -1035,7 +1035,13 @@ body {
     .partners-container {
         flex-wrap: wrap;
         justify-content: center;
-        gap: var(--spacing-sm);
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) 0;
+    }
+
+    .partner-link {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        min-width: 100px;
     }
 
     .partner-logo {
