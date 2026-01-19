@@ -714,8 +714,9 @@ body {
 }
 
 .speakers-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--spacing-lg);
     margin-top: var(--spacing-lg);
 }
@@ -729,6 +730,8 @@ body {
     background: var(--color-bg);
     border: 1px solid #e5e5e5;
     transition: all 0.2s ease;
+    flex: 0 0 auto;
+    max-width: 280px;
 }
 
 .speaker-card:hover {
@@ -744,6 +747,7 @@ body {
     margin-bottom: var(--spacing-md);
     border: 3px solid #e5e5e5;
     transition: border-color 0.2s ease;
+    flex-shrink: 0;
 }
 
 .speaker-card:hover .speaker-image {
