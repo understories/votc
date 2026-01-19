@@ -1189,9 +1189,23 @@ body {
         display: none;
     }
 
+    .nav-speakers-full {
+        display: none;
+    }
+
+    .nav-speakers-short {
+        display: inline;
+    }
+
     .nav a {
         font-size: clamp(9px, 2vw, 12px);
         flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .nav a:not(.nav-cta-button):not(.nav-rabbit) {
+        min-width: fit-content;
+        text-align: center;
     }
 
     .nav a.nav-cta-button {
@@ -1200,6 +1214,7 @@ body {
         background: var(--color-accent);
         margin-left: auto;
         z-index: 10;
+        font-size: clamp(9px, 2vw, 12px);
     }
 }
 
