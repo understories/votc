@@ -605,6 +605,15 @@ body {
     animation: none !important;
 }
 
+.schedule-week > h3,
+.schedule-week > .week-theme {
+    display: inline;
+}
+
+.schedule-week > .week-theme {
+    margin-left: 0.5em;
+}
+
 .schedule-week:hover {
     border-color: var(--color-accent);
 }
@@ -616,9 +625,26 @@ body {
 .schedule-week h3 {
     font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 2px;
+    margin-bottom: 0;
     margin-right: 120px;
     color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline;
+}
+
+.schedule-week h3::after {
+    content: ": ";
+    margin-right: 0.25em;
+}
+
+.schedule-week .week-theme {
+    font-size: 1.3rem;
+    line-height: 1.4;
+    color: var(--color-accent);
+    margin: 0;
+    margin-left: 0;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     display: inline;
@@ -628,26 +654,10 @@ body {
     font-size: 0.9rem;
     color: var(--color-text-light);
     margin-bottom: var(--spacing-xs);
+    margin-top: 2px;
     font-weight: 400;
     letter-spacing: 0.02em;
     display: block;
-}
-
-.schedule-week .week-theme {
-    font-size: 1.3rem;
-    line-height: 1.4;
-    color: var(--color-accent);
-    margin: 0;
-    margin-left: 0.5em;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: inline;
-}
-
-.schedule-week h3::after {
-    content: ": ";
-    margin-right: 0.25em;
 }
 
 .schedule-week .week-description {
