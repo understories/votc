@@ -69,12 +69,12 @@ module.exports = async function handler(req, res) {
 
     // Prepare the data to append
     const timestamp = new Date().toISOString();
-    const values = [[timestamp, email, name || '']];
+    const values = [[timestamp, email, name || '', involvement || '']];
 
     // Append to the sheet
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${sheetName}!A:C`,
+      range: `${sheetName}!A:D`,
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       resource: {
