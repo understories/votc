@@ -600,7 +600,7 @@ body {
     box-sizing: border-box;
     margin: 0;
     transform: none;
-    will-change: auto;
+    contain: layout style;
 }
 
 .schedule-week:hover {
@@ -667,18 +667,26 @@ body {
 }
 
 .schedule-week .week-description-full {
-    display: none;
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
     font-size: 0.95rem;
     line-height: 1.6;
     color: var(--color-text);
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.schedule-week:hover .week-description-full,
+.schedule-week.expanded .week-description-full {
+    visibility: visible;
+    opacity: 1;
+    max-height: 2000px;
     margin-top: var(--spacing-sm);
     padding-top: var(--spacing-sm);
     border-top: 1px solid #e5e5e5;
-    will-change: auto;
-}
-
-.schedule-week.expanded .week-description-full {
-    display: block;
 }
 
 .schedule-week.expanded .read-more-link::after {
@@ -689,10 +697,6 @@ body {
 }
 
 @media (min-width: 769px) {
-    .schedule-week:hover .week-description-full {
-        display: block;
-    }
-    
     .read-more-link {
         pointer-events: none;
     }
