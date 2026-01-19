@@ -800,8 +800,8 @@ body {
 }
 
 .speaker-image {
-    width: 90px;
-    height: 90px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: var(--spacing-xs);
@@ -818,6 +818,7 @@ body {
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: var(--spacing-xs);
+    margin-top: 0;
     color: var(--color-accent);
     text-transform: none;
     letter-spacing: 0.02em;
