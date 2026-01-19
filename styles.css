@@ -617,6 +617,7 @@ body {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: var(--spacing-xs);
+    margin-right: 120px;
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.05em;
