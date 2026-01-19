@@ -25,6 +25,16 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'P2P Foundation',
             logo: 'p2p.jpeg',
             url: 'https://p2pfoundation.net/'
+        },
+        {
+            name: 'Crypto Commons Association',
+            logo: 'cca-logo.png',
+            url: 'https://www.crypto-commons.org'
+        },
+        {
+            name: 'Collaborative Finance',
+            logo: 'cofi_cropped.png',
+            url: 'https://www.collaborative-finance.net'
         }
     ];
 
