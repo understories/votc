@@ -884,7 +884,7 @@ body {
 }
 
 .speaker-bio {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     line-height: 1.6;
     color: var(--color-text);
     margin: 0;
@@ -1188,7 +1188,7 @@ body {
     }
 
     .speaker-bio {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         line-height: 1.5;
     }
 
