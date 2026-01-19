@@ -1119,8 +1119,9 @@ body {
 
     .speakers-container {
         grid-template-columns: 1fr;
-        gap: var(--spacing-md);
+        gap: var(--spacing-sm);
         padding: 0 var(--spacing-sm);
+        justify-items: center;
     }
 
     .speaker-card {
