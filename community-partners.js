@@ -9,17 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             name: 'Hubs Network',
             logo: 'hubs-network.jpg',
-            url: 'https://placeholder-url-hubs-network.com' // TODO: Replace with actual URL
+            url: 'https://www.hubsnetwork.org' 
         },
         {
             name: 'Invisible Garden',
             logo: 'invisible-garden.svg',
-            url: 'https://placeholder-url-invisible-garden.com' // TODO: Replace with actual URL
+            url: 'https://invisible.garden' 
         },
         {
             name: 'Understories',
             logo: 'understories.png',
-            url: 'https://placeholder-url-understories.com' // TODO: Replace with actual URL
+            url: 'https://understories.github.io' 
         }
     ];
 
