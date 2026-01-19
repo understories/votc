@@ -63,9 +63,15 @@ document.addEventListener('DOMContentLoaded', function() {
             bio.className = 'speaker-bio';
             bio.textContent = bioText.trim();
 
+            // Create toggle text for mobile
+            const toggleText = document.createElement('span');
+            toggleText.className = 'speaker-toggle-text';
+            toggleText.textContent = 'click to read more';
+
             // Assemble card
             speakerCard.appendChild(img);
             speakerCard.appendChild(name);
+            speakerCard.appendChild(toggleText);
             speakerCard.appendChild(bio);
 
             // Add click handler for mobile
@@ -73,6 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (window.innerWidth < 769) {
                     e.preventDefault();
                     speakerCard.classList.toggle('expanded');
+                    // Update toggle text
+                    if (speakerCard.classList.contains('expanded')) {
+                        toggleText.textContent = 'click to collapse';
+                    } else {
+                        toggleText.textContent = 'click to read more';
+                    }
                 }
             });
 

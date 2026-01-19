@@ -826,6 +826,14 @@ body {
     overflow-wrap: normal;
 }
 
+.speaker-toggle-text {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    margin-top: var(--spacing-xs);
+    font-style: italic;
+    display: none;
+}
+
 .speaker-bio {
     font-size: 0.9rem;
     line-height: 1.6;
@@ -1113,6 +1121,10 @@ body {
 
     .speaker-name {
         font-size: 1rem;
+    }
+
+    .speaker-toggle-text {
+        display: block;
     }
 
     .speaker-bio {
