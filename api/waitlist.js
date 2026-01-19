@@ -18,11 +18,21 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { email, name } = req.body;
+    const { email, name, involvement } = req.body;
 
     // Validate email
     if (!email || !email.includes('@')) {
       return res.status(400).json({ error: 'Valid email is required' });
+    }
+
+    // Validate name
+    if (!name || name.trim() === '') {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+
+    // Validate involvement
+    if (!involvement || involvement.trim() === '') {
+      return res.status(400).json({ error: 'Please describe your desired involvement' });
     }
 
     // Get credentials from environment variables
