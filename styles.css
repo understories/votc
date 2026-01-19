@@ -725,15 +725,17 @@ body {
     background: var(--color-bg);
     border: 1px solid #e5e5e5;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     min-height: 200px;
+    align-self: start;
 }
 
 .speaker-card:hover {
     border-color: var(--color-accent);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
+    z-index: 1;
 }
 
 .speaker-image {
@@ -767,21 +769,22 @@ body {
     color: var(--color-text);
     margin: 0;
     margin-top: var(--spacing-sm);
-    display: none;
     opacity: 0;
     max-height: 0;
     overflow: hidden;
     text-align: left;
     max-width: 100%;
-    transition: opacity 0.3s ease, max-height 0.3s ease;
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin-top 0.3s ease;
+    visibility: hidden;
 }
 
 .speaker-card:hover .speaker-bio,
 .speaker-card.expanded .speaker-bio {
-    display: block;
     opacity: 1;
     max-height: 500px;
     overflow: visible;
+    visibility: visible;
+    margin-top: var(--spacing-sm);
 }
 
 .community-partners-section {
