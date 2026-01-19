@@ -780,6 +780,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     padding: var(--spacing-sm);
     background: var(--color-bg);
@@ -788,7 +789,7 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     min-height: auto;
-    align-self: start;
+    align-self: center;
     min-width: 180px;
 }
 
@@ -804,7 +805,7 @@ body {
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 0.5rem;
     border: 3px solid #e5e5e5;
     transition: border-color 0.3s ease;
     flex-shrink: 0;
