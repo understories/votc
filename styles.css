@@ -724,10 +724,12 @@ body {
 
 .speakers-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    gap: var(--spacing-lg);
+    align-items: flex-start;
+    gap: var(--spacing-md);
     margin-top: var(--spacing-lg);
+    overflow-x: auto;
 }
 
 .speaker-card {
@@ -735,12 +737,13 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     background: var(--color-bg);
     border: 1px solid #e5e5e5;
     transition: all 0.2s ease;
     flex: 0 0 auto;
-    max-width: 280px;
+    min-width: 150px;
+    max-width: 180px;
 }
 
 .speaker-card:hover {
@@ -749,12 +752,12 @@ body {
 }
 
 .speaker-image {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: var(--spacing-md);
-    border: 3px solid #e5e5e5;
+    margin-bottom: var(--spacing-xs);
+    border: 2px solid #e5e5e5;
     transition: border-color 0.2s ease;
     flex-shrink: 0;
 }
@@ -764,17 +767,17 @@ body {
 }
 
 .speaker-name {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
     color: var(--color-accent);
     text-transform: none;
     letter-spacing: 0.02em;
 }
 
 .speaker-bio {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.85rem;
+    line-height: 1.4;
     color: var(--color-text);
     margin: 0;
 }
@@ -1015,27 +1018,38 @@ body {
     }
 
     .speakers-container {
-        flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-md);
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--spacing-sm);
     }
 
     .speaker-card {
-        max-width: 100%;
+        min-width: 120px;
+        max-width: 140px;
     }
 
     .speaker-image {
-        width: 150px;
-        height: 150px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .speaker-name {
+        font-size: 0.9rem;
+    }
+
+    .speaker-bio {
+        font-size: 0.75rem;
     }
 
     .partners-container {
-        gap: var(--spacing-md);
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--spacing-sm);
     }
 
     .partner-logo {
-        max-width: 150px;
-        max-height: 80px;
+        max-width: 100px;
+        max-height: 50px;
     }
 
     .cta-sticky {
