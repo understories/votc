@@ -441,6 +441,21 @@ body {
     letter-spacing: 0.02em;
 }
 
+.explore-link {
+    display: inline-block;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-top: var(--spacing-sm);
+    transition: color 0.2s ease;
+}
+
+.explore-link:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+}
+
 .section p {
     margin-bottom: var(--spacing-md);
     font-size: 1.1rem;
