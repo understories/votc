@@ -65,6 +65,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function loadSpeaker(speaker) {
+        // Create speaker card
+        const speakerCard = document.createElement('div');
+        speakerCard.className = 'speaker-card';
+
+        // Create image
+        const img = document.createElement('img');
+        img.src = `speakers/${speaker.folder}/${speaker.image}`;
+        img.alt = speaker.name;
+        img.className = 'speaker-image';
+        img.loading = 'lazy';
+
+        // Create name
+        const name = document.createElement('h3');
+        name.className = 'speaker-name';
+        name.textContent = speaker.name;
+
+        // Create bio (filled after fetch to preserve order)
+        const bio = document.createElement('p');
+        bio.className = 'speaker-bio';
+
+        // Create toggle text for mobile
+        const toggleText = document.createElement('span');
+        toggleText.className = 'speaker-toggle-text';
+        toggleText.textContent = 'click to read more';
+
+        // Create read more indicator for desktop
+        const readMoreDesktop = document.createElement('span');
+        readMoreDesktop.className = 'speaker-read-more-desktop';
+        readMoreDesktop.textContent = 'read more v';
+
+        // Assemble card
+        speakerCard.appendChild(img);
+        speakerCard.appendChild(name);
+        speakerCard.appendChild(readMoreDesktop);
+        speakerCard.appendChild(toggleText);
+        speakerCard.appendChild(bio);
+
+        // Add click handler for mobile
+        speakerCard.addEventListener('click', function(e) {
+            if (window.innerWidth < 769) {
+                e.preventDefault();
+                speakerCard.classList.toggle('expanded');
+                // Update toggle text
+                if (speakerCard.classList.contains('expanded')) {
+                    toggleText.textContent = 'click to collapse';
+                } else {
+                    toggleText.textContent = 'click to read more';
+                }
+            }
+        });
+
+        // Append immediately to preserve sorted order
+        speakersContainer.appendChild(speakerCard);
+
         try {
             // Fetch bio
             const bioResponse = await fetch(`speakers/${speaker.folder}/bio.md`);
@@ -73,60 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             const bioText = await bioResponse.text();
-
-            // Create speaker card
-            const speakerCard = document.createElement('div');
-            speakerCard.className = 'speaker-card';
-
-            // Create image
-            const img = document.createElement('img');
-            img.src = `speakers/${speaker.folder}/${speaker.image}`;
-            img.alt = speaker.name;
-            img.className = 'speaker-image';
-            img.loading = 'lazy';
-
-            // Create name
-            const name = document.createElement('h3');
-            name.className = 'speaker-name';
-            name.textContent = speaker.name;
-
-            // Create bio
-            const bio = document.createElement('p');
-            bio.className = 'speaker-bio';
             bio.textContent = bioText.trim();
-
-            // Create toggle text for mobile
-            const toggleText = document.createElement('span');
-            toggleText.className = 'speaker-toggle-text';
-            toggleText.textContent = 'click to read more';
-
-            // Create read more indicator for desktop
-            const readMoreDesktop = document.createElement('span');
-            readMoreDesktop.className = 'speaker-read-more-desktop';
-            readMoreDesktop.textContent = 'read more v';
-
-            // Assemble card
-            speakerCard.appendChild(img);
-            speakerCard.appendChild(name);
-            speakerCard.appendChild(readMoreDesktop);
-            speakerCard.appendChild(toggleText);
-            speakerCard.appendChild(bio);
-
-            // Add click handler for mobile
-            speakerCard.addEventListener('click', function(e) {
-                if (window.innerWidth < 769) {
-                    e.preventDefault();
-                    speakerCard.classList.toggle('expanded');
-                    // Update toggle text
-                    if (speakerCard.classList.contains('expanded')) {
-                        toggleText.textContent = 'click to collapse';
-                    } else {
-                        toggleText.textContent = 'click to read more';
-                    }
-                }
-            });
-
-            speakersContainer.appendChild(speakerCard);
         } catch (error) {
             console.error(`Error loading speaker ${speaker.name}:`, error);
         }
