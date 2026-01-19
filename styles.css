@@ -599,6 +599,8 @@ body {
     max-width: 100%;
     box-sizing: border-box;
     margin: 0;
+    transform: none;
+    will-change: auto;
 }
 
 .schedule-week:hover {
@@ -672,6 +674,7 @@ body {
     margin-top: var(--spacing-sm);
     padding-top: var(--spacing-sm);
     border-top: 1px solid #e5e5e5;
+    will-change: auto;
 }
 
 .schedule-week.expanded .week-description-full {
