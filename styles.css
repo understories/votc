@@ -571,6 +571,32 @@ body {
     flex: 1;
 }
 
+.schedule-week .week-description {
+    margin-top: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.schedule-week .week-description-preview {
+    display: inline;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+}
+
+.schedule-week .week-description-full {
+    display: none;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-top: var(--spacing-xs);
+    padding-top: var(--spacing-xs);
+    border-top: 1px solid #e5e5e5;
+}
+
+.schedule-week:hover .week-description-full {
+    display: block;
+}
+
 .explore-section {
     margin-bottom: var(--spacing-xl);
 }
