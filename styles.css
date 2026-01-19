@@ -1125,7 +1125,9 @@ body {
 
     .speaker-card {
         min-height: auto;
-        padding: var(--spacing-sm);
+        padding: var(--spacing-xs);
+        width: fit-content;
+        margin: 0 auto;
     }
 
     .speaker-image {
