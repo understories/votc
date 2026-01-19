@@ -612,6 +612,15 @@ body {
     margin-bottom: var(--spacing-sm);
 }
 
+.schedule-photo {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto var(--spacing-lg);
+    border-radius: 8px;
+    object-fit: cover;
+}
+
 .schedule-weeks {
     display: flex;
     flex-direction: column;
