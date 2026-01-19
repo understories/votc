@@ -257,6 +257,14 @@ body {
     text-decoration: none;
 }
 
+.nav-speakers-full {
+    display: none;
+}
+
+.nav-speakers-short {
+    display: inline;
+}
+
 .nav a.nav-cta-button {
     display: inline-block;
     background: var(--color-accent);
