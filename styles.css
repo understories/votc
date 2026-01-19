@@ -621,6 +621,7 @@ body {
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    display: inline;
 }
 
 .schedule-week .week-dates {
@@ -632,12 +633,20 @@ body {
 }
 
 .schedule-week .week-theme {
-    font-size: 1rem;
+    font-size: 1.3rem;
     line-height: 1.4;
-    color: var(--color-text);
+    color: var(--color-accent);
     margin: 0;
-    font-weight: 500;
-    flex: 1;
+    margin-left: 0.5em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline;
+}
+
+.schedule-week h3::after {
+    content: ": ";
+    margin-right: 0.25em;
 }
 
 .schedule-week .week-description {
