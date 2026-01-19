@@ -709,6 +709,63 @@ body {
     }
 }
 
+.speakers-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.speakers-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.speaker-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-md);
+    background: var(--color-bg);
+    border: 1px solid #e5e5e5;
+    transition: all 0.2s ease;
+}
+
+.speaker-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.speaker-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: var(--spacing-md);
+    border: 3px solid #e5e5e5;
+    transition: border-color 0.2s ease;
+}
+
+.speaker-card:hover .speaker-image {
+    border-color: var(--color-accent);
+}
+
+.speaker-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-accent);
+    text-transform: none;
+    letter-spacing: 0.02em;
+}
+
+.speaker-bio {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin: 0;
+}
+
 .explore-section {
     margin-bottom: var(--spacing-xl);
 }
@@ -897,6 +954,16 @@ body {
 
     .schedule-week {
         min-height: auto;
+    }
+
+    .speakers-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .speaker-image {
+        width: 150px;
+        height: 150px;
     }
 
     .cta-sticky {
