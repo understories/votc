@@ -742,6 +742,17 @@ body {
     }
 }
 
+@media (max-width: 768px) {
+    .schedule-week.expanded .read-more-link {
+        pointer-events: auto;
+    }
+    
+    .schedule-week.expanded .read-more-link::after {
+        content: " (click to collapse)";
+        display: inline;
+    }
+}
+
 .speakers-section {
     margin-bottom: var(--spacing-xl);
 }
