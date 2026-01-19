@@ -1257,6 +1257,10 @@ body {
         display: none;
     }
 
+    .nav a.nav-get-involved {
+        display: none;
+    }
+
     .nav a {
         font-size: clamp(10px, 2.5vw, 14px);
         flex-shrink: 0;
