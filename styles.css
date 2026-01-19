@@ -1045,12 +1045,14 @@ body {
 
     .partner-link {
         padding: var(--spacing-xs) var(--spacing-sm);
-        min-width: 100px;
+        max-width: 200px;
+        min-width: 120px;
+        flex: 1 1 auto;
     }
 
     .partner-logo {
-        max-width: 100px;
-        max-height: 50px;
+        max-width: 100%;
+        max-height: 70px;
     }
 
     .cta-sticky {
