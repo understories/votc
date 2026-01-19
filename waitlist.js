@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('waitlist-form');
     const emailInput = document.getElementById('waitlist-email');
     const nameInput = document.getElementById('waitlist-name');
+    const involvementInput = document.getElementById('waitlist-involvement');
     const messageDiv = document.getElementById('waitlist-message');
     const submitButton = form.querySelector('button[type="submit"]');
 
@@ -111,13 +112,23 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const involvement = involvementInput.value.trim();
+
+        // Involvement is required
+        if (!involvement || involvement === '') {
+            showMessage('Please describe your desired involvement.', 'error');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit';
+            return;
+        }
+
         try {
             const response = await fetch('/api/waitlist', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, name }),
+                body: JSON.stringify({ email, name, involvement }),
             });
 
             const data = await response.json();
