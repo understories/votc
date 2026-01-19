@@ -707,9 +707,9 @@ body {
 
 .speakers-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -721,13 +721,13 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     background: var(--color-bg);
     border: 1px solid #e5e5e5;
     border-radius: 8px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
-    min-height: 200px;
+    min-height: 180px;
     align-self: start;
 }
 
@@ -739,11 +739,11 @@ body {
 }
 
 .speaker-image {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
     border: 3px solid #e5e5e5;
     transition: border-color 0.3s ease;
     flex-shrink: 0;
