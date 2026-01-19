@@ -779,7 +779,7 @@ body {
     border-radius: 8px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
-    min-height: 180px;
+    min-height: auto;
     align-self: start;
     min-width: 180px;
 }
