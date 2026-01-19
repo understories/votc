@@ -68,6 +68,14 @@ document.addEventListener('DOMContentLoaded', function() {
             speakerCard.appendChild(name);
             speakerCard.appendChild(bio);
 
+            // Add click handler for mobile
+            speakerCard.addEventListener('click', function(e) {
+                if (window.innerWidth < 769) {
+                    e.preventDefault();
+                    speakerCard.classList.toggle('expanded');
+                }
+            });
+
             speakersContainer.appendChild(speakerCard);
         } catch (error) {
             console.error(`Error loading speaker ${speaker.name}:`, error);
