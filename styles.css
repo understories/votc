@@ -591,7 +591,6 @@ body {
     background: var(--color-bg);
     padding: var(--spacing-md);
     border: 1px solid #e5e5e5;
-    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     min-height: auto;
@@ -603,7 +602,6 @@ body {
 
 .schedule-week:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 769px) {
@@ -675,7 +673,6 @@ body {
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
-    transition: color 0.2s ease;
 }
 
 .read-more-link:hover {
