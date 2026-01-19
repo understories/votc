@@ -166,7 +166,7 @@ body {
     background: var(--color-bg);
     border-bottom: 1px solid #e5e5e5;
     z-index: 100;
-    padding: var(--spacing-sm) 0;
+    padding: clamp(0.5rem, 1.5vw, var(--spacing-sm)) 0;
 }
 
 .header-container {
@@ -185,17 +185,19 @@ body {
 
 .nav {
     display: flex;
-    gap: var(--spacing-md);
+    gap: clamp(0.5rem, 1.5vw, var(--spacing-md));
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .nav a {
     color: var(--color-link);
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: clamp(10px, 1.2vw, 14px);
     letter-spacing: 0.05em;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .nav a:hover {
@@ -1125,15 +1127,37 @@ body {
 
 @media (max-width: 480px) {
     .header-container {
-        padding: 0 var(--spacing-sm);
+        padding: 0 clamp(0.5rem, 2vw, var(--spacing-sm));
+        flex-wrap: nowrap;
     }
 
     .logo img {
-        height: 30px;
+        height: clamp(20px, 4vw, 30px);
+    }
+
+    .nav {
+        gap: clamp(0.25rem, 1vw, 0.75rem);
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .nav::-webkit-scrollbar {
+        display: none;
     }
 
     .nav a {
-        font-size: 12px;
+        font-size: clamp(9px, 2vw, 12px);
+        flex-shrink: 0;
+    }
+
+    .nav a.nav-cta-button {
+        position: sticky;
+        right: 0;
+        background: var(--color-accent);
+        margin-left: auto;
+        z-index: 10;
     }
 }
 
