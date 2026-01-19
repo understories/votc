@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'Fritsch.png'
         },
         {
-            name: 'Koss Knobelsdorf',
-            folder: 'Koss Knobelsdorf',
+            name: 'Koss',
+            folder: 'Koss',
             image: 'koss.png'
         },
         {
