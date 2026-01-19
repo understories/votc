@@ -780,7 +780,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
     padding: var(--spacing-sm);
     background: var(--color-bg);
@@ -789,7 +789,7 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     min-height: auto;
-    align-self: center;
+    align-self: start;
     min-width: 180px;
 }
 
@@ -858,6 +858,7 @@ body {
     transition: opacity 0.3s ease, max-height 0.3s ease, margin-top 0.3s ease;
     visibility: hidden;
     padding: 0;
+    width: 100%;
 }
 
 .speaker-card:hover .speaker-bio,
@@ -868,6 +869,7 @@ body {
     visibility: visible;
     margin-top: var(--spacing-sm);
     padding: 0;
+    display: block;
 }
 
 .community-partners-section {
