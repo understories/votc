@@ -733,6 +733,13 @@ body {
     display: block;
 }
 
+/* Ensure collapsed state works on mobile */
+@media (max-width: 768px) {
+    .schedule-week:not(.expanded) .week-description-full {
+        display: none !important;
+    }
+}
+
 .schedule-week.expanded .read-more-link::after {
     content: " (click to collapse)";
     font-size: 0.85rem;
