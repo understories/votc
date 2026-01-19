@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Understories',
             logo: 'understories.png',
             url: 'https://understories.github.io' 
+        },
+        {
+            name: 'P2P Foundation',
+            logo: 'p2p.jpeg',
+            url: 'https://p2pfoundation.net/'
         }
     ];
 
