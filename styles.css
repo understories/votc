@@ -598,6 +598,7 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    margin: 0;
 }
 
 .schedule-week:hover {
@@ -605,23 +606,6 @@ body {
 }
 
 @media (min-width: 769px) {
-    .schedule-week {
-        position: relative;
-    }
-    
-    .schedule-week:hover {
-        z-index: 5;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        width: 100vw;
-        max-width: 100vw;
-        padding-left: calc(50vw - 50% + var(--spacing-md));
-        padding-right: calc(50vw - 50% + var(--spacing-md));
-    }
-    
     .schedule-week:hover .week-description-full {
         display: block;
     }
