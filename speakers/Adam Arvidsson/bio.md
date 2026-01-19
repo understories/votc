@@ -1,0 +1,1 @@
+Adam Arvidsson is Assistant Professor in the Department of Film and Media Studies, at the University of Copenhagan. His research examines the economic role of brands within the contemporary information economy.
