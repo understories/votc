@@ -58,6 +58,15 @@
     animation: fadeUpTitle 4s ease-out 2s forwards;
 }
 
+@media (max-width: 768px) {
+    .loading-title {
+        bottom: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
 .skip-loading-button {
     position: absolute;
     top: var(--spacing-md);
@@ -74,6 +83,14 @@
     cursor: pointer;
     transition: all 0.2s ease;
     backdrop-filter: blur(4px);
+}
+
+@media (max-width: 768px) {
+    .skip-loading-button {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
 }
 
 .skip-loading-button:hover {
