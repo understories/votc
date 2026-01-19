@@ -630,6 +630,7 @@ body {
     margin-bottom: var(--spacing-xs);
     font-weight: 400;
     letter-spacing: 0.02em;
+    display: block;
 }
 
 .schedule-week .week-theme {
