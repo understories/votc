@@ -37,24 +37,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
-    // Sort by last name; single-name entries go last
-    const sortedSpeakers = [...speakers].sort((a, b) => {
+    // Sort by last name; single-name entries go last, sorted by first name
+    const withLastName = speakers.filter((speaker) => speaker.name.trim().split(/\s+/).length > 1);
+    const withoutLastName = speakers.filter((speaker) => speaker.name.trim().split(/\s+/).length === 1);
+
+    withLastName.sort((a, b) => {
         const aParts = a.name.trim().split(/\s+/);
         const bParts = b.name.trim().split(/\s+/);
-        const aHasLast = aParts.length > 1;
-        const bHasLast = bParts.length > 1;
-
-        if (aHasLast && bHasLast) {
-            const lastCompare = aParts[aParts.length - 1]
-                .localeCompare(bParts[bParts.length - 1], 'en', { sensitivity: 'base' });
-            if (lastCompare !== 0) return lastCompare;
-            return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
-        }
-
-        if (aHasLast !== bHasLast) return aHasLast ? -1 : 1;
-
+        const aLast = aParts[aParts.length - 1];
+        const bLast = bParts[bParts.length - 1];
+        const lastCompare = aLast.localeCompare(bLast, 'en', { sensitivity: 'base' });
+        if (lastCompare !== 0) return lastCompare;
         return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
     });
+
+    withoutLastName.sort((a, b) => {
+        const aFirst = a.name.trim().split(/\s+/)[0];
+        const bFirst = b.name.trim().split(/\s+/)[0];
+        return aFirst.localeCompare(bFirst, 'en', { sensitivity: 'base' });
+    });
+
+    const sortedSpeakers = [...withLastName, ...withoutLastName];
 
     // Load each speaker
     sortedSpeakers.forEach(speaker => {
