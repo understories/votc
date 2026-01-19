@@ -670,30 +670,18 @@ body {
 }
 
 .schedule-week .week-description-full {
-    visibility: hidden;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
+    display: none;
     font-size: 0.95rem;
     line-height: 1.6;
     color: var(--color-text);
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-    transition: none !important;
-    animation: none !important;
+    margin-top: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid #e5e5e5;
 }
 
 .schedule-week:hover .week-description-full,
 .schedule-week.expanded .week-description-full {
-    visibility: visible;
-    opacity: 1;
-    max-height: 2000px;
-    margin-top: var(--spacing-sm);
-    padding-top: var(--spacing-sm);
-    border-top: 1px solid #e5e5e5;
-    transition: none !important;
-    animation: none !important;
+    display: block;
 }
 
 .schedule-week.expanded .read-more-link::after {
