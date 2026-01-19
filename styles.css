@@ -1185,20 +1185,24 @@ body {
 
 @media (max-width: 480px) {
     .header-container {
-        padding: 0 clamp(0.5rem, 2vw, var(--spacing-sm));
+        padding: 0 clamp(0.25rem, 1vw, 0.5rem);
         flex-wrap: nowrap;
+        gap: clamp(0.25rem, 1vw, 0.5rem);
     }
 
     .logo img {
-        height: clamp(20px, 4vw, 30px);
+        height: clamp(18px, 3.5vw, 28px);
+        flex-shrink: 1;
     }
 
     .nav {
-        gap: clamp(0.25rem, 1vw, 0.75rem);
+        gap: clamp(0.15rem, 0.8vw, 0.5rem);
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        flex: 1;
+        min-width: 0;
     }
 
     .nav::-webkit-scrollbar {
@@ -1218,14 +1222,20 @@ body {
     }
 
     .nav a {
-        font-size: clamp(9px, 2vw, 12px);
+        font-size: clamp(10px, 2.5vw, 14px);
         flex-shrink: 0;
         white-space: nowrap;
+        padding: clamp(0.2rem, 1vw, 0.4rem) clamp(0.3rem, 1.2vw, 0.6rem);
     }
 
     .nav a:not(.nav-cta-button):not(.nav-rabbit) {
         min-width: fit-content;
         text-align: center;
+    }
+
+    .nav a.nav-rabbit {
+        font-size: clamp(14px, 3vw, 18px);
+        padding: 0 clamp(0.2rem, 0.8vw, 0.4rem);
     }
 
     .nav a.nav-cta-button {
@@ -1234,7 +1244,9 @@ body {
         background: var(--color-accent);
         margin-left: auto;
         z-index: 10;
-        font-size: clamp(9px, 2vw, 12px);
+        font-size: clamp(10px, 2.5vw, 14px);
+        padding: clamp(0.3rem, 1.2vw, 0.5rem) clamp(0.5rem, 2vw, 0.8rem);
+        flex-shrink: 0;
     }
 }
 
