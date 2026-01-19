@@ -762,9 +762,26 @@ body {
         pointer-events: auto;
     }
     
+    .schedule-week.expanded .read-more-link {
+        font-size: 0.95rem;
+    }
+    
+    .schedule-week.expanded .read-more-link::before {
+        content: "";
+        display: none;
+    }
+    
+    /* Hide original text when expanded, show only collapse text */
+    .schedule-week.expanded .read-more-link {
+        color: transparent;
+        font-size: 0;
+    }
+    
     .schedule-week.expanded .read-more-link::after {
-        content: " (click to collapse)";
+        content: "click to collapse";
         display: inline;
+        color: var(--color-accent);
+        font-size: 0.95rem;
     }
 }
 
@@ -1158,6 +1175,15 @@ body {
 
     .speaker-card.expanded .speaker-bio {
         max-height: none;
+    }
+    
+    /* Ensure collapsed state works on mobile - matching schedule fix */
+    .speaker-card:not(.expanded) .speaker-bio {
+        opacity: 0 !important;
+        max-height: 0 !important;
+        visibility: hidden !important;
+        margin-top: 0 !important;
+        overflow: hidden !important;
     }
 
     .partners-container {
