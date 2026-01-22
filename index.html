@@ -19,12 +19,23 @@
     <div id="loading-screen" class="loading-screen">
         <button id="skip-loading" class="skip-loading-button">Skip</button>
         <div class="loading-image-container">
-            <img src="valley.webp" alt="Valley of the Commons" class="loading-image">
+            <video id="loading-video" class="loading-image" autoplay muted playsinline>
+                <source src="photos/shortintro.mov" type="video/quicktime">
+                <source src="photos/shortintro.mov" type="video/mp4">
+            </video>
         </div>
         <div class="loading-title">
             <h1>Valley of the Commons</h1>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingVideo = document.getElementById('loading-video');
+            if (loadingVideo) {
+                loadingVideo.playbackRate = 0.6;
+            }
+        });
+    </script>
 
     <!-- Header -->
     <header class="header">
