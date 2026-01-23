@@ -35,6 +35,16 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Collaborative Finance',
             logo: 'cofi_cropped.png',
             url: 'https://www.collaborative-finance.net'
+        },
+        {
+            name: 'Akasha Hub',
+            logo: 'akasha.png',
+            url: 'https://akasha.barcelona'
+        },
+        {
+            name: 'dOrg',
+            logo: 'd0rg.png',
+            url: 'https://www.dorg.tech'
         }
     ];
 
