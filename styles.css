@@ -456,7 +456,7 @@ body {
 .main-content {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: var(--spacing-xl) var(--spacing-md) 0;
+    padding: 3rem var(--spacing-md) 0;
     position: relative;
 }
 
