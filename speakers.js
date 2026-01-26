@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'Abbigeri.png'
         },
         {
+            name: 'Una Wang',
+            folder: 'Una Wang',
+            image: 'una.jpg'
+        },
+        {
             name: 'Veronica',
             folder: 'Veronica',
             image: 'veronica.png'
