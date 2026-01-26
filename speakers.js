@@ -16,9 +16,19 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'Fritsch.png'
         },
         {
+            name: 'Clara Gromaches',
+            folder: 'Clara Gromaches',
+            image: 'clara.jpg'
+        },
+        {
             name: 'Koss',
             folder: 'Koss',
             image: 'koss.png'
+        },
+        {
+            name: 'Lorenzo Patuzzo',
+            folder: 'Lorenzo Patuzzo',
+            image: 'lorenzo.jpg'
         },
         {
             name: 'Michel Bauwens',
