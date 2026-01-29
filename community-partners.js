@@ -45,6 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'dOrg',
             logo: 'd0rg.png',
             url: 'https://www.dorg.tech'
+        },
+        {
+            name: 'FarmLab',
+            logo: 'farmlab.png',
+            url: 'https://www.farmlab.at'
         }
     ];
 
