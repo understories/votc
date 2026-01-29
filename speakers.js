@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'Arvidsson.png'
         },
         {
+            name: 'Charlie Fisher',
+            folder: 'Charlie Fisher',
+            image: 'charlie.jpeg'
+        },
+        {
             name: 'Felix Fritsch',
             folder: 'Felix Fritsch',
             image: 'Fritsch.png'
