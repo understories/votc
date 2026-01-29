@@ -16,6 +16,16 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'charlie.jpeg'
         },
         {
+            name: 'Daniel Figueiredo',
+            folder: 'DANIEL RICHARD DE OLIVIERA FIGUEIREDO',
+            image: 'daniel.webp'
+        },
+        {
+            name: 'Emil Fritsch',
+            folder: 'Emil Fritsch',
+            image: 'emil.webp'
+        },
+        {
             name: 'Felix Fritsch',
             folder: 'Felix Fritsch',
             image: 'Fritsch.png'
