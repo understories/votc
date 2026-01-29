@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             name: 'Emil Fritsch',
             folder: 'Emil Fritsch',
-            image: 'emil.webp'
+            image: 'emil.webp',
+            imagePosition: 'top'
         },
         {
             name: 'Felix Fritsch',
@@ -105,6 +106,9 @@ document.addEventListener('DOMContentLoaded', function() {
         img.alt = speaker.name;
         img.className = 'speaker-image';
         img.loading = 'lazy';
+        if (speaker.imagePosition) {
+            img.style.objectPosition = speaker.imagePosition;
+        }
 
         // Create name
         const name = document.createElement('h3');
