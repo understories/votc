@@ -1,0 +1,50 @@
+services:
+  votc:
+    build: .
+    container_name: votc
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://votc:votc_password@votc-db:5432/votc
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - EMAIL_FROM=${EMAIL_FROM:-Valley of the Commons <noreply@yourdomain.com>}
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - ADMIN_EMAILS=${ADMIN_EMAILS}
+      - NODE_ENV=production
+    depends_on:
+      votc-db:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.votc.rule=Host(`your-domain.com`)"
+      - "traefik.http.services.votc.loadbalancer.server.port=3000"
+    networks:
+      - traefik-public
+
+  votc-db:
+    image: postgres:16-alpine
+    container_name: votc-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=votc
+      - POSTGRES_PASSWORD=votc_password
+      - POSTGRES_DB=votc
+    volumes:
+      - votc-postgres-data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U votc"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - traefik-public
+
+volumes:
+  votc-postgres-data:
+
+networks:
+  traefik-public:
+    external: true
